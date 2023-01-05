@@ -42,7 +42,6 @@ const SignIn = () => {
                     const userData = {
                          name: user?.displayName,
                          email: user?.email,
-                         type: 'Buyer'
                     }
 
                     fetch('https://e-somaz-server.vercel.app/users', {
