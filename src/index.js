@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Auth from './AuthProvider/Auth';
 import {QueryClient,QueryClientProvider,} from '@tanstack/react-query'
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient()
 root.render(

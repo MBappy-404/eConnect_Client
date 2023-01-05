@@ -203,7 +203,7 @@ const ShowPost = ({publicPost,refetch}) => {
 				<div class="flex items-center 	md:justify-between	 ml-2  md:w-9/12  rounded-3xl bg-gray-200	 overflow-hidden px-2 ">
 				 <form onSubmit={handleComment} >
                      <input  type="text" id='commentValue'  class="text-sm p-3 text-gray-700 md:p-3 w-40 md:w-70 lg:w-72 rounded-3xl    outline-none bg-gray-200 " placeholder="Write your comment..." name="comment" required/>
-                     <button type='submit' className=''> <FaLocationArrow className='mr-5 md:mr-0 ml-0 md:ml-10 lg:ml-0 w-4 h-4 md:w-5 md:h-5 inline animation rotate-45'></FaLocationArrow></button>
+                     <button type='submit'> <FaLocationArrow className='mr-5 md:mr-0 ml-0 md:ml-10 lg:ml-0 w-4 h-4 md:w-5 md:h-5 inline animation rotate-45'></FaLocationArrow></button>
                          {/* <label htmlFor="submit">Submit</label> */}
                          {/* <input type="submit" id='submit' className='bg-gray-400 p-3 text-sm -ml-8 rounded-3xl' /> */}
                         

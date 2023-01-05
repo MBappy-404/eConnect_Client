@@ -10,11 +10,7 @@ const Header = () => {
      const { user, logOut } = useContext(AuthContext);
 
      
-     function chatBoxToogleHandler() {
-           document.getElementById("formbold-form-wrapper").classList.toggle("hidden");
-           document.getElementById("cross-icon").classList.toggle("hidden");
-           document.getElementById("chat-icon").classList.toggle("hidden");
-     }
+    
 
      const handleLogOut = () => {
           logOut()
@@ -30,7 +26,7 @@ const Header = () => {
           <li><Link to="/media">
           <svg stroke="currentColor" fill="currentColor" stroke-width="0.2" version="1.1" viewBox="0 0 17 17" class="i" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><g></g><path d="M0 13h15v1h-15v-1zM0 15.993h10v-1h-10v1zM17 1v11h-17v-11h17zM16 2h-15v9h15v-9z"></path></svg> Media
                </Link></li>
-          {/* <li><Link to="/about" >About</Link></li> */}
+          <li><Link to="/about" ><svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M8.75 25.25C8.336 25.25 8 24.914 8 24.5 8 24.086 8.336 23.75 8.75 23.75L19.25 23.75C19.664 23.75 20 24.086 20 24.5 20 24.914 19.664 25.25 19.25 25.25L8.75 25.25ZM17.164 12.846 12.055 15.923C11.591 16.202 11 15.869 11 15.327L11 9.172C11 8.631 11.591 8.297 12.055 8.576L17.164 11.654C17.612 11.924 17.612 12.575 17.164 12.846M21.75 2.75 6.25 2.75C4.182 2.75 2.5 4.432 2.5 6.5L2.5 18C2.5 20.068 4.182 21.75 6.25 21.75L21.75 21.75C23.818 21.75 25.5 20.068 25.5 18L25.5 6.5C25.5 4.432 23.818 2.75 21.75 2.75"></path></svg>Watch</Link></li>
           {/* <li><Link to="/message">Message</Link></li> */}
           {/* {
                user?.uid ? <> <li><Link onClick={handleLogOut} to="/signup">Log Out</Link></li></> :
@@ -63,18 +59,7 @@ const Header = () => {
 
                     </div>
                     <div className="navbar-end">
-
-                    <label htmlFor="my-modal-4" className=" hidden lg:block rounded-full w-20">open modal</label>
-
-                        {/* Put this part before </body> tag */}
-                        <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-                        <label htmlFor="my-modal-4" className="modal bg-transparent cursor-pointer">
-                          <label className="modal-box relative w-[350px] md:ml-[500px] lg:ml-[950px]" htmlFor="">
-                              <label htmlFor="my-modal-4" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                           
-                            <ChatBox></ChatBox>
-                          </label>
-                        </label>
+ 
                              
                         
                          
