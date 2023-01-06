@@ -1,22 +1,42 @@
 import React from 'react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link,  useNavigate } from 'react-router-dom';
+import { Link,  NavLink,  useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../AuthProvider/Auth';
 import { useQuery } from '@tanstack/react-query';
 import { FaUserCircle } from 'react-icons/fa';
 import ShowPost from '../../Media/ShowPost';
 import moment from 'moment';
 import '../../../App.css'
+import { FaUserFriends } from "react-icons/fa";
  
 
 const Home = () => {
      const { user,loading, } = useContext(AuthContext);
      const { register, formState: { errors }, handleSubmit } = useForm();
      const navigate = useNavigate();
-     // const time = ;
-     
-     // console.log(time);
+     const nav_items = [
+        {
+          path: '/home',
+          nav_item: 'Home',
+          icon:  <svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M25.825 12.29C25.824 12.289 25.823 12.288 25.821 12.286L15.027 2.937C14.752 2.675 14.392 2.527 13.989 2.521 13.608 2.527 13.248 2.675 13.001 2.912L2.175 12.29C1.756 12.658 1.629 13.245 1.868 13.759 2.079 14.215 2.567 14.479 3.069 14.479L5 14.479 5 23.729C5 24.695 5.784 25.479 6.75 25.479L11 25.479C11.552 25.479 12 25.031 12 24.479L12 18.309C12 18.126 12.148 17.979 12.33 17.979L15.67 17.979C15.852 17.979 16 18.126 16 18.309L16 24.479C16 25.031 16.448 25.479 17 25.479L21.25 25.479C22.217 25.479 23 24.695 23 23.729L23 14.479 24.931 14.479C25.433 14.479 25.921 14.215 26.132 13.759 26.371 13.245 26.244 12.658 25.825 12.29"></path></svg>,
+        },
+        {
+          path: '/media',
+          nav_item: 'Media',
+          icon: <svg stroke="currentColor" fill="currentColor" stroke-width="0.2" version="1.1" viewBox="0 0 17 17" class="i" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><g></g><path d="M0 13h15v1h-15v-1zM0 15.993h10v-1h-10v1zM17 1v11h-17v-11h17zM16 2h-15v9h15v-9z"></path></svg> ,
+        },
+        {
+          path: '/about',
+          nav_item: 'Watch',
+          icon: <svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M8.75 25.25C8.336 25.25 8 24.914 8 24.5 8 24.086 8.336 23.75 8.75 23.75L19.25 23.75C19.664 23.75 20 24.086 20 24.5 20 24.914 19.664 25.25 19.25 25.25L8.75 25.25ZM17.164 12.846 12.055 15.923C11.591 16.202 11 15.869 11 15.327L11 9.172C11 8.631 11.591 8.297 12.055 8.576L17.164 11.654C17.612 11.924 17.612 12.575 17.164 12.846M21.75 2.75 6.25 2.75C4.182 2.75 2.5 4.432 2.5 6.5L2.5 18C2.5 20.068 4.182 21.75 6.25 21.75L21.75 21.75C23.818 21.75 25.5 20.068 25.5 18L25.5 6.5C25.5 4.432 23.818 2.75 21.75 2.75"></path></svg> ,
+        },
+        {
+          path: '/ ',
+          nav_item: 'People',
+          icon: <FaUserFriends className='w-7 h-7' ></FaUserFriends>  ,
+        },
+      ]
       
     
 
@@ -202,15 +222,25 @@ const Home = () => {
 
         </div>
         {/* <!-- News Content --> */}
-        <div class="w-full lg:w-6/12 border-r">
-            <nav class="flex py-4 px-4 sticky sm:block lg:hidden  top-0 border-b bg-white items-center justify-between">
-                <h1 class="font-extrabold tracking-wide text-lg ">Home</h1>
-                <div class="text-blue-400">
-                    <i class="fa fa-dot-circle-o"></i>
-                </div>
+        <div class="w-full lg:w-6/12 h-full border-r pb-5">
+            <div class="flex py-4 px-4 sticky md:flex lg:hidden  top-0 border-b bg-white items-center justify-between">
+            {nav_items.map((e, i) => (
+          <NavLink
+            key={i}
+            to={e.path}
+            activeStyle={{ color: "red"}}
+            // className={`menu active ${(isActive) => (isActive ? 'bordered' : '')}`}
+            className={({ isActive }) => isActive ? 'text-blue-600' : ''}
+            // className="menu-item"
+          >
+            <span  >{e.icon}</span>
+            <h3>{e.nav_item}</h3>
+          </NavLink>
+        ))}
+                
                
-                    {/* <h1 className='text-xl md:text-3xl mt-10 ml-0 md:ml-0 lg:ml-[440px] text-gray-600 font-semibold'>Popular Posts</h1> */}
-            </nav>
+                     
+            </div>
              
          
     
@@ -226,7 +256,7 @@ const Home = () => {
                 <div class="flex space-x-2 mx-auto max-w-2xl p-2 relative">
          
          <div class="  w-28 h-52 md:w-36 md:h-52  rounded-xl overflow-hidden flex flex-col group cursor-pointer relative">
-             <img class="w-full h-4/5 object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://raw.githubusercontent.com/shibbirweb/public-asset/master/shibbir.jpg" alt="MD. Shibbir Ahmed"/>
+             <img class="w-full h-4/5 object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src={user?.photoURL} alt="img"/>
              <div class="bg-gray-800 relative flex-1 flex flex-col">
                  <div class="bg-blue-600 p-0.5 rounded-full border-4 border-gray-800 absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -244,10 +274,10 @@ const Home = () => {
          </div>
         
          <div class="  w-28 h-52 md:w-36 md:h-52  rounded-xl overflow-hidden flex flex-col relative group cursor-pointer">
-             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://picsum.photos/200/300?random=1" alt="MD. Shibbir Ahmed"/>
+             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src={user?.photoURL} alt="img"/>
  
              <div class="w-8 h-8 border-4 box-content border-gray-800 rounded-full overflow-hidden absolute left-2.5 top-3">
-                 <img class="w-full h-full object-cover" src="https://raw.githubusercontent.com/shibbirweb/public-asset/master/shibbir.jpg" alt="MD. Shibbir Ahmed"/>
+                 <img class="w-full h-full object-cover" src="https://raw.githubusercontent.com/shibbirweb/public-asset/master/shibbir.jpg" alt="img"/>
              </div>
  
              <div class="absolute inset-x-3 bottom-1">
@@ -259,10 +289,10 @@ const Home = () => {
          </div>
        
          <div class=" w-28 h-52 md:w-36 md:h-52 rounded-xl overflow-hidden flex flex-col relative group cursor-pointer">
-             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://picsum.photos/200/300?random=3" alt="MD. Shibbir Ahmed"/>
+             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://picsum.photos/200/300?random=3" alt="img"/>
  
              <div class="w-8 h-8 border-4 box-content border-blue-600 rounded-full overflow-hidden absolute left-2.5 top-3">
-                 <img class="w-full h-full object-cover" src="https://picsum.photos/200/300?random=4" alt="MD. Shibbir Ahmed"/>
+                 <img class="w-full h-full object-cover" src="https://picsum.photos/200/300?random=4" alt="img"/>
              </div>
  
              <div class="absolute inset-x-3 bottom-1">
@@ -273,10 +303,10 @@ const Home = () => {
  
          </div>
          <div class=" w-28 h-52 md:w-36 hidden md:block md:h-52 rounded-xl overflow-hidden flex flex-col relative group cursor-pointer">
-             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://picsum.photos/200/300?random=3" alt="MD. Shibbir Ahmed"/>
+             <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src="https://picsum.photos/200/300?random=3" alt="img"/>
  
              <div class="w-8 h-8 border-4 box-content border-blue-600 rounded-full overflow-hidden absolute left-2.5 top-3">
-                 <img class="w-full h-full object-cover" src="https://picsum.photos/200/300?random=4" alt="MD. Shibbir Ahmed"/>
+                 <img class="w-full h-full object-cover" src="https://picsum.photos/200/300?random=4" alt="img"/>
              </div>
  
              <div class="absolute inset-x-3 bottom-1">
@@ -300,8 +330,8 @@ const Home = () => {
                     <div class="m-2  py-1">
                         <img class="inline-block h-10 w-10 rounded-full" src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png" alt="" />
                     </div>
-                    <div class="flex-1 px-2 pt-2 mt-2">
-                        <input class=" bg-transparent text-gray-700 border  text-md focus:outline-none pl-3  w-full h-10 rounded-full"  placeholder="Write something?"  {...register("post", {})}/> 
+                    <div class="flex-1 pr-5 pt-2 mt-2">
+                        <input class=" bg-transparent text-gray-700 border  text-md focus:outline-none pl-3 w-full h-10 rounded-full"  placeholder="Write something?"  {...register("post", {})}/> 
                     </div>                    
                 </div>
                  <div class="flex justify-start">

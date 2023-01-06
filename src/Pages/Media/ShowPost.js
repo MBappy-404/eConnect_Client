@@ -80,7 +80,7 @@ const ShowPost = ({publicPost,refetch}) => {
      }
      return (
           <div>
-               <div class="border w-full  md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto rounded-2xl p-4">
+               <div class="border w-full  md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto  rounded-2xl p-4">
                     <div class="flex items-center	justify-between">
                          <div class="gap-3.5	flex items-center ">
                               <img src={postUserPhoto} alt='img' className='w-12 h-12 ring-1 ring-primary  rounded-full'/>

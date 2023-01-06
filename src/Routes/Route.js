@@ -6,6 +6,7 @@ import Media from "../Pages/Media/Media";
 import Profile from "../Pages/Profile/Profile";
 import SignIn from "../Pages/Sign Up & Sign In/SignIn";
 import SignUp from "../Pages/Sign Up & Sign In/SignUp";
+import Watch from "../Pages/Watch/Watch";
 
 const router = createBrowserRouter([
      {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
                     path:'/profile',
                     element: <Profile></Profile>
                     
+               },
+               {
+                    path:'/watch',
+                    element: <Watch></Watch>
                }
                
           ]
