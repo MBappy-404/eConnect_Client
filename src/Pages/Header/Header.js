@@ -1,5 +1,6 @@
 
 import { useContext } from 'react';
+import { FaBell,FaSignOutAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/Auth';
  
@@ -41,27 +42,34 @@ const Header = () => {
      return (
 
           <div>
-               <div className="navbar  bg-gradient-to-r from-green-400 to-cyan-400 fixed top-0 z-50">
+               <div className="navbar bg-gradient-to-r from-cyan-500 to-blue-500 fixed top-0 z-50">
 
                     <div className="navbar-start md:ml-10">
                           
                          <h1 className='text-black text-xl md:text-3xl'>e<span className='text-primary text-xl font-bold md:text-3xl'>Somaz</span></h1>
                     </div>
                     <div className="navbar-center ">
-                         <ul className="menu menu-horizontal hidden text-white lg:flex p-0">
+                         <ul className="menu menu-horizontal hidden text-white mr-24 lg:flex p-0">
                               {menuItem}
                          </ul>
 
                     </div>
-                    <div className="navbar-end">
+                    <div className="navbar-end mr-0  md:mr-8">
  
+                     {/* notification */}
+                     <div className='hidden lg:block'>
+                    <Link to='/notification'> <FaBell  className='w-6 h-6 cursor-pointer text-white inline mr-5'/></Link>
+                     
+                     {user?.uid ? <FaSignOutAlt onClick={handleLogOut} className='w-6 h-6 cursor-pointer mr-3 text-white inline'></FaSignOutAlt> : <span className='btn btn-sm btn-primary'><Link to='/signIn'>Log In</Link></span>}
+                     </div>
+                     
                              
                         
                          
                             {/* <ChatBox></ChatBox> */}
                              
                           
-                         <div className="dropdown dropdown-end md:mr-10 mr-0">
+                         <div className="dropdown md:block lg:hidden dropdown-end md:mr-10 mr-0">
                               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                                    <div className="w-12 rounded-full">
                                    {

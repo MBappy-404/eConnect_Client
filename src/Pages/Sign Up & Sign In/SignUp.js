@@ -98,7 +98,7 @@ const SignUp = () => {
 
 
      return (
-          <div>
+          <div className='bg-white'>
                
      <div class=" my-20 mb-20 mx-3 md:mx-40 rounded-2xl   bg-green-300 shadow sm:rounded-2xl flex justify-center flex-1">
       <div class="lg:w-1/2 py-10">

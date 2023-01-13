@@ -1,51 +1,38 @@
+
+
 import React from 'react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link,  NavLink,  useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../AuthProvider/Auth';
 import { useQuery } from '@tanstack/react-query';
-import { FaUserCircle } from 'react-icons/fa';
 import ShowPost from '../../Media/ShowPost';
-import moment from 'moment';
-import '../../../App.css'
-import { FaUserFriends } from "react-icons/fa";
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { RotatingLines } from 'react-loader-spinner';
+ 
+ 
  
 
 const Home = () => {
-     const { user,loading, } = useContext(AuthContext);
+     const { user } = useContext(AuthContext);
      const { register, formState: { errors }, handleSubmit } = useForm();
      const navigate = useNavigate();
-     const nav_items = [
-        {
-          path: '/home',
-          nav_item: 'Home',
-          icon:  <svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M25.825 12.29C25.824 12.289 25.823 12.288 25.821 12.286L15.027 2.937C14.752 2.675 14.392 2.527 13.989 2.521 13.608 2.527 13.248 2.675 13.001 2.912L2.175 12.29C1.756 12.658 1.629 13.245 1.868 13.759 2.079 14.215 2.567 14.479 3.069 14.479L5 14.479 5 23.729C5 24.695 5.784 25.479 6.75 25.479L11 25.479C11.552 25.479 12 25.031 12 24.479L12 18.309C12 18.126 12.148 17.979 12.33 17.979L15.67 17.979C15.852 17.979 16 18.126 16 18.309L16 24.479C16 25.031 16.448 25.479 17 25.479L21.25 25.479C22.217 25.479 23 24.695 23 23.729L23 14.479 24.931 14.479C25.433 14.479 25.921 14.215 26.132 13.759 26.371 13.245 26.244 12.658 25.825 12.29"></path></svg>,
-        },
-        {
-          path: '/media',
-          nav_item: 'Media',
-          icon: <svg stroke="currentColor" fill="currentColor" stroke-width="0.2" version="1.1" viewBox="0 0 17 17" class="i" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><g></g><path d="M0 13h15v1h-15v-1zM0 15.993h10v-1h-10v1zM17 1v11h-17v-11h17zM16 2h-15v9h15v-9z"></path></svg> ,
-        },
-        {
-          path: '/about',
-          nav_item: 'Watch',
-          icon: <svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M8.75 25.25C8.336 25.25 8 24.914 8 24.5 8 24.086 8.336 23.75 8.75 23.75L19.25 23.75C19.664 23.75 20 24.086 20 24.5 20 24.914 19.664 25.25 19.25 25.25L8.75 25.25ZM17.164 12.846 12.055 15.923C11.591 16.202 11 15.869 11 15.327L11 9.172C11 8.631 11.591 8.297 12.055 8.576L17.164 11.654C17.612 11.924 17.612 12.575 17.164 12.846M21.75 2.75 6.25 2.75C4.182 2.75 2.5 4.432 2.5 6.5L2.5 18C2.5 20.068 4.182 21.75 6.25 21.75L21.75 21.75C23.818 21.75 25.5 20.068 25.5 18L25.5 6.5C25.5 4.432 23.818 2.75 21.75 2.75"></path></svg> ,
-        },
-        {
-          path: '/ ',
-          nav_item: 'People',
-          icon: <FaUserFriends className='w-7 h-7' ></FaUserFriends>  ,
-        },
-      ]
+     const [loading, setLoading] = useState()
+     const [loading2, setLoading2] = useState()
+     
       
     
 
      const {data: post = [], refetch  } = useQuery({
           queryKey:['post'],
           queryFn: async()=>{
+            // setLoading2(true)
                const res = await fetch('https://e-somaz-server.vercel.app/post/top');
                const data = await res.json();
+               setLoading2(false)
                return data;
+              
                
           }
      })
@@ -55,11 +42,17 @@ const Home = () => {
       
      const handlePost = (data) => {
 
+       
+
+          if(user){
+    
           const image = data.image[0];
           if( !data.post && !data.image[0] ){
-               return alert('please filap form')
+               return  toast.error("Please write something");
           }
+           setLoading(true)
           if(!data.image[0]){
+            // create post without image 
                const Post = {
                     post: data?.post,
                     postUser: user?.displayName,
@@ -71,6 +64,7 @@ const Home = () => {
                }
 
                fetch('https://e-somaz-server.vercel.app/post', {
+            
                     method: 'POST',
                     headers: {
                          'content-type': 'application/json',
@@ -82,9 +76,8 @@ const Home = () => {
                .then( data => {
                     console.log(data);
                     navigate('/media')
-                    
-                    // toast.success('doctor add success')
-                    // navigate('/dashboard/manageDoctor')
+                    toast.success("Your post is publish ");
+                    setLoading(false)
                })   
           }
           // console.log(image);
@@ -100,7 +93,7 @@ const Home = () => {
                .then( imageData => {
                     // console.log(imageData);
                  if (imageData.success) {
-                    //with image
+                    //create post  with image
                const Post = {
                     post: data?.post,
                     image: imageData.data.url,
@@ -123,139 +116,40 @@ const Home = () => {
                .then(res => res.json())
                .then( data => {
                     console.log(data);
+                    toast.success( "Your post is Publish ");
                     navigate('/media')
+                    setLoading(false)
                     
                     // toast.success('doctor add success')
-                    // navigate('/dashboard/manageDoctor')
+                    
                })   
                }  
              })
              
-            
-
-
-
-
+          
+            }
+            else{
+                toast.warning( "Please Login or SignUp");
+            }
      }
      return (
 //           
 
-<div className='mt-16'>
-<div class="flex">
-        {/* <!-- Menu --> */}
-        <div class="w-[250px] lg:w-[300px] border-r bg-white hidden lg:block">
-            <div class="py-2  space-y-3 fixed top-0">
-            <div class="hidden  mt-20 md:hidden lg:block  ">
-                    <div className=' h-full     mx-auto     w-[100%]  '>
-                         <div class="mt-5 px-8 text-center">
-                             {user?  <> <img src={user?.photoURL}  alt="" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" /></> : <><img class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img'/></>}
-                              <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-                                   {user? <>{user?.displayName}</>: <>Anonymous</>}
-                                   </h5>
-                              
-                         </div>
-
-                         <div >
-                         <ul class="px-8  mt-4">
-                              <li>
-                                   <a href=" " aria-label="dashboard" class="relative  px-4 py-3 flex items-center space-x-4 rounded-xl text-gray-600 hover:bg-gray-300 to-cyan-400">
-                                       <FaUserCircle className='text-gray-400' ></FaUserCircle >
-                                        <span class="-mr-1 font-medium"><Link to='/profile'>Profile</Link></span>
-                                   </a>
-                              </li>
-                              <li>
-                                   <Link class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
-                                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
-                                        </svg>
-                                        <span class="group-hover:text-gray-700">Saved</span>
-                                   </Link>
-                              </li>
-                              <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
-                                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
-                                        </svg>
-                                        <span class="group-hover:text-gray-700">Reports</span>
-                                   </a>
-                              </li>
-                              <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
-                                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
-                                        </svg>
-                                        <span class="group-hover:text-gray-700">People</span>
-                                   </a>
-                              </li>
-                              <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="group-hover:text-gray-700">Finance</span>
-                                   </a>
-                              </li>
-                              <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                   <button class="  flex items-center space-x-4 rounded-md text-gray-600 group">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                              </svg>
-                              <span class="group-hover:text-gray-700">Logout</span>
-                         </button>
-                                   </a>
-                              </li>
-                         </ul>
-                         </div>
-                         
-                    </div>
-
-                   
-               </div>
-
-            </div>
-
-
-        </div>
-        {/* <!-- News Content --> */}
-        <div class="w-full lg:w-6/12 h-full border-r pb-5">
-            <div class="flex py-4 px-4 sticky md:flex lg:hidden  top-0 border-b bg-white items-center justify-between">
-            {nav_items.map((e, i) => (
-          <NavLink
-            key={i}
-            to={e.path}
-            activeStyle={{ color: "red"}}
-            // className={`menu active ${(isActive) => (isActive ? 'bordered' : '')}`}
-            className={({ isActive }) => isActive ? 'text-blue-600' : ''}
-            // className="menu-item"
-          >
-            <span  >{e.icon}</span>
-            <h3>{e.nav_item}</h3>
-          </NavLink>
-        ))}
-                
-               
-                     
-            </div>
-             
-         
-    
-      
-
+<div className=''>
  
-  
+        
+        {/* <!-- post Content --> */}
+        <div class="w-full h-full border-r pb-5">
  
        {/* story  */}
-            <div className='  flex justify-center px-2'>
-                <div className=' bg-white w-full lg:w-[500px] mt-5 md:mx-0  rounded-xl m-auto'>
+           {user? 
+           <>
+            <div className='flex justify-center px-2'>
+                <div className=' bg-white w-full lg:w-[500px] md:w-[750px] mt-5 md:mx-0  rounded-xl m-auto'>
              
                 <div class="flex space-x-2 mx-auto max-w-2xl p-2 relative">
          
-         <div class="  w-28 h-52 md:w-36 md:h-52  rounded-xl overflow-hidden flex flex-col group cursor-pointer relative">
+         <div class="w-28 h-52 md:w-36 md:h-52  rounded-xl overflow-hidden flex flex-col group cursor-pointer relative">
              <img class="w-full h-4/5 object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src={user?.photoURL} alt="img"/>
              <div class="bg-gray-800 relative flex-1 flex flex-col">
                  <div class="bg-blue-600 p-0.5 rounded-full border-4 border-gray-800 absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -277,7 +171,7 @@ const Home = () => {
              <img class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-105" src={user?.photoURL} alt="img"/>
  
              <div class="w-8 h-8 border-4 box-content border-gray-800 rounded-full overflow-hidden absolute left-2.5 top-3">
-                 <img class="w-full h-full object-cover" src="https://raw.githubusercontent.com/shibbirweb/public-asset/master/shibbir.jpg" alt="img"/>
+                 <img class="w-full h-full object-cover" src={user?.photoURL} alt="img"/>
              </div>
  
              <div class="absolute inset-x-3 bottom-1">
@@ -310,7 +204,7 @@ const Home = () => {
              </div>
  
              <div class="absolute inset-x-3 bottom-1">
-                 <p class="text-white font-semibold">Baky Billah</p>
+                 <p class="text-white font-semibold">Jackness</p>
              </div>
  
              <div class="absolute inset-0 bg-black opacity-0 transition duration-300 ease-in-out group-hover:opacity-20"></div>
@@ -320,194 +214,109 @@ const Home = () => {
        
                 </div>
                 </div>
+           </>: ''}
 
 
-                {/* Post  */}
+                {/* create Post  */}
             <div className='  flex justify-center px-2'>
-                <div className=' bg-white w-full lg:w-[500px] mt-5 md:mx-0  rounded-xl m-auto'>
-                    <form onSubmit={handleSubmit(handlePost)}>
-                 <div class="flex">
-                    <div class="m-2  py-1">
-                        <img class="inline-block h-10 w-10 rounded-full" src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png" alt="" />
-                    </div>
-                    <div class="flex-1 pr-5 pt-2 mt-2">
-                        <input class=" bg-transparent text-gray-700 border  text-md focus:outline-none pl-3 w-full h-10 rounded-full"  placeholder="Write something?"  {...register("post", {})}/> 
-                    </div>                    
+          
+                <div className=' bg-white w-full md:w-[750px] lg:w-[500px] mt-5 md:mx-0  rounded-xl m-auto'>
+                 
+                 
+                <form onSubmit={handleSubmit(handlePost)}>
+                <div class="flex">
+                   <div class="m-2  py-1">
+                   {
+                    user?.photoURL ? <img class="inline-block h-10 w-10 rounded-full" src={user?.photoURL} alt='img' /> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' class="inline-block h-10 w-10 rounded-full" alt='img' />
+                    }
+                   </div>
+                   <div class="flex-1 pr-5 pt-2 mt-2">
+                       <input class=" bg-transparent text-gray-700 border  text-md focus:outline-none pl-3 w-full h-10 rounded-full"  placeholder="Write something?"  {...register("post", {})}/> 
+                   </div>                    
+               </div>
+                <div class="flex justify-start">
+
+                   <div class="w-full px-2">
+                       
+                       <div class="flex  items-center justify-evenly">
+                           <div class=" text-center px-1 py-1 m-2">
+                               <span  class="mt-1 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full  hover:text-blue-400">
+                                 <label htmlFor="icon-button-file">
+                                 <svg class="text-center cursor-pointer h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                 </label>
+                                 <input id="icon-button-file" type="file" {...register("image", {})}
+                                 className="file-input hidden mt-2 file-input-bordered file-input-primary w-full max-w-xs"/>Photos
+                                 </span>
+                           </div>
+
+                           <div class=" text-center py-2 m-2">
+                               <span   class="mt-1 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full   hover:text-blue-400">
+                               <svg class="text-center h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Felling
+                           </span>
+                           </div>
+                           <div>
+                          
+                         {loading? <button type='submit' className="bg-blue-400 cursor-pointer hover:bg-blue-600 text-white font-bold py-1 md:py-2 mt-1 px-5 md:px-8 mr-5 md:mr-0 rounded-full">
+                         <RotatingLines
+                           strokeColor="white"
+                           strokeWidth="5"
+                           animationDuration="0.75"
+                           width="25"
+                           display='inline'
+                           visible={true}
+                         />
+                         
+                         </button>: <button type='submit' className="bg-blue-400 cursor-pointer hover:bg-blue-600 text-white font-bold py-1 md:py-2 mt-1 px-5 md:px-8 mr-5 md:mr-0 rounded-full">Post</button>}
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               </form> 
                 </div>
-                 <div class="flex justify-start">
-
-                    <div class="w-full px-2">
-                        
-                        <div class="flex  items-center justify-evenly">
-                            <div class=" text-center px-1 py-1 m-2">
-                                <span  class="mt-1 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full  hover:text-blue-400">
-                                  <label htmlFor="icon-button-file">
-                                  <svg class="text-center cursor-pointer h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                  </label>
-                                  <input id="icon-button-file" type="file" {...register("image", {})}
-                                  className="file-input hidden mt-2 file-input-bordered file-input-primary w-full max-w-xs"/>Photos
-                                  </span>
-                            </div>
-
-                             
-
-                            <div class=" text-center py-2 m-2">
-                                <span   class="mt-1 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full   hover:text-blue-400">
-                                <svg class="text-center h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Felling
-                            </span>
-                            </div>
-                            <div>
-                            <input    type='submit' value='Post'   className="bg-blue-400 cursor-pointer hover:bg-blue-600 text-white font-bold py-1 md:py-2 mt-1 px-5 md:px-8 mr-5 md:mr-0 rounded-full"/>
-                            </div>
+                </div>
+             {/* show home page posts  */}
+            <main class="h-full w-full px-2">  
+            <div>
+                <h1 className='text-xl text-center mt-5 text-gray-700 font-bold'>Popular Posts</h1>
+                 
+            </div>                
+                 {loading2?  <div className='flex justify-center mt-5 mb-20'>
+                    {/* <RotatingLines
+                           strokeColor="blue"
+                           strokeWidth="3"
+                           animationDuration="0.75"
+                           width="40"
+                           visible={true}
+                         /> */}
+                    <div class="border w-full md:w-750px lg:w-[500px] shadow rounded-md p-4    mx-auto">
+                    <div class="animate-pulse flex space-x-4">
+                      <div class="rounded-full bg-slate-700 h-10 w-10"></div>
+                      <div class="flex-1 space-y-6 py-1">
+                        <div class="h-2 bg-slate-700 rounded"></div>
+                        <div class="space-y-3">
+                          <div class="grid grid-cols-3 gap-4">
+                            <div class="h-2 bg-slate-700 rounded col-span-2"></div>
+                            <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+                          </div>
+                          <div class="h-2 bg-slate-700 rounded"></div>
                         </div>
+                      </div>
                     </div>
-
-                    
-                </div>
-                </form>
-                </div>
-                </div>
-
-
-                
-            <main class="h-full w-full px-2">
-                  
-                  {
+                  </div>
+                 </div>  : <>
+                          {
                    post.map(publicPost => <ShowPost
                    key={publicPost._id}
                    refetch={refetch}
                    publicPost={publicPost}
+                    
                    ></ShowPost>)
                   }
+                         
+                         </> }
                    
-                     
-      
                 </main>
         </div>
-        {/* <!-- Follow and trends --> */}
-        <div class=" py-4 mx-auto bg-white  hidden lg:block">
-           
-           
-            <div class="sticky top-3 px-2 rounded-2xl ">
-                
-             
-            <section class="flex flex-col    justify-center    text-gray-600 ">
-    <div class=" ">
-        
-        <div class="relative max-w-[340px] mx-auto bg-white    rounded-lg">
-            
-            <header class="pt-6 pb-4 px-5 border-b border-gray-200">
-                <div class="flex justify-between items-center mb-3">
-                    
-                    <div class="flex items-center">
-                        <a class="inline-flex items-start mr-3" href="#0">
-                            <img class="rounded-full" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-48-01_nugblk.jpg" width="48" height="48" alt="Lauren Marsano" />
-                        </a>
-                        <div class="pr-1">
-                            <a class="inline-flex text-gray-800 hover:text-gray-900" href="#0">
-                                <h2 class="text-xl leading-snug font-bold">Lauren Marsano</h2>
-                            </a>
-                            <a class="block text-sm font-medium hover:text-indigo-500" href="#0">@lauren.mars</a>
-                        </div>
-                    </div>
-                    
-                    <div class="relative inline-flex flex-shrink-0">
-                        <button class="text-gray-400 hover:text-gray-500 rounded-full focus:ring-0 outline-none focus:outline-none">
-                            <span class="sr-only">Settings</span>
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
-                                <path d="m15.621 7.015-1.8-.451A5.992 5.992 0 0 0 13.13 4.9l.956-1.593a.5.5 0 0 0-.075-.611l-.711-.707a.5.5 0 0 0-.611-.075L11.1 2.87a5.99 5.99 0 0 0-1.664-.69L8.985.379A.5.5 0 0 0 8.5 0h-1a.5.5 0 0 0-.485.379l-.451 1.8A5.992 5.992 0 0 0 4.9 2.87l-1.593-.956a.5.5 0 0 0-.611.075l-.707.711a.5.5 0 0 0-.075.611L2.87 4.9a5.99 5.99 0 0 0-.69 1.664l-1.8.451A.5.5 0 0 0 0 7.5v1a.5.5 0 0 0 .379.485l1.8.451c.145.586.378 1.147.691 1.664l-.956 1.593a.5.5 0 0 0 .075.611l.707.707a.5.5 0 0 0 .611.075L4.9 13.13a5.99 5.99 0 0 0 1.664.69l.451 1.8A.5.5 0 0 0 7.5 16h1a.5.5 0 0 0 .485-.379l.451-1.8a5.99 5.99 0 0 0 1.664-.69l1.593.956a.5.5 0 0 0 .611-.075l.707-.707a.5.5 0 0 0 .075-.611L13.13 11.1a5.99 5.99 0 0 0 .69-1.664l1.8-.451A.5.5 0 0 0 16 8.5v-1a.5.5 0 0 0-.379-.485ZM8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex flex-wrap justify-center sm:justify-start space-x-4">
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 fill-current flex-shrink-0 text-gray-400" viewBox="0 0 16 16">
-                            <path d="M8 8.992a2 2 0 1 1-.002-3.998A2 2 0 0 1 8 8.992Zm-.7 6.694c-.1-.1-4.2-3.696-4.2-3.796C1.7 10.69 1 8.892 1 6.994 1 3.097 4.1 0 8 0s7 3.097 7 6.994c0 1.898-.7 3.697-2.1 4.996-.1.1-4.1 3.696-4.2 3.796-.4.3-1 .3-1.4-.1Zm-2.7-4.995L8 13.688l3.4-2.997c1-1 1.6-2.198 1.6-3.597 0-2.798-2.2-4.996-5-4.996S3 4.196 3 6.994c0 1.399.6 2.698 1.6 3.697 0-.1 0-.1 0 0Z" />
-                        </svg>
-                        <span class="text-sm whitespace-nowrap ml-2">Milan, IT</span>
-                    </div>
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 fill-current flex-shrink-0 text-gray-400" viewBox="0 0 16 16">
-                            <path d="M11 0c1.3 0 2.6.5 3.5 1.5 1 .9 1.5 2.2 1.5 3.5 0 1.3-.5 2.6-1.4 3.5l-1.2 1.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l1.1-1.2c.6-.5.9-1.3.9-2.1s-.3-1.6-.9-2.2C12 1.7 10 1.7 8.9 2.8L7.7 4c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l1.2-1.1C8.4.5 9.7 0 11 0ZM8.3 12c.4-.4 1-.5 1.4-.1.4.4.4 1 0 1.4l-1.2 1.2C7.6 15.5 6.3 16 5 16c-1.3 0-2.6-.5-3.5-1.5C.5 13.6 0 12.3 0 11c0-1.3.5-2.6 1.5-3.5l1.1-1.2c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L2.9 8.9c-.6.5-.9 1.3-.9 2.1s.3 1.6.9 2.2c1.1 1.1 3.1 1.1 4.2 0L8.3 12Zm1.1-6.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-4.2 4.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l4.2-4.2Z" />
-                        </svg>
-                        <a class="text-sm font-medium whitespace-nowrap text-indigo-500 hover:text-indigo-600 ml-2" href="#0">carolinmcneail.com</a>
-                    </div>
-                </div>
-            </header>
-            
-            <div class="py-3 px-5">
-                <h3 class="text-xs font-semibold uppercase text-gray-400 mb-1">Chats</h3>
-                
-                <div class="divide-y divide-gray-200">
-                    
-                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
-                        <div class="flex items-center">
-                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-01_pfck4u.jpg" width="32" height="32" alt="Marie Zulfikar" />
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Marie Zulfikar</h4>
-                                <div class="text-[13px]">The video chat ended · 2hrs</div>
-                            </div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
-                        <div class="flex items-center">
-                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-02_vll8uv.jpg" width="32" height="32" alt="Nhu Cassel" />
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Nhu Cassel</h4>
-                                <div class="text-[13px]">Hello Lauren 👋, · 24 Mar</div>
-                            </div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
-                        <div class="flex items-center">
-                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-03_uzwykl.jpg" width="32" height="32" alt="Patrick Friedman" />
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Patrick Friedman</h4>
-                                <div class="text-[13px]">Yes, you’re right but… · 14 Mar</div>
-                            </div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
-                        <div class="flex items-center">
-                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-04_ttlftd.jpg" width="32" height="32" alt="Byrne McKenzie" />
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Byrne McKenzie</h4>
-                                <div class="text-[13px]">Hey Lauren ✨, first of all… · 14 Mar</div>
-                            </div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
-                        <div class="flex items-center">
-                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-05_bktgmb.jpg" width="32" height="32" alt="Scott Micheal" />
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Scott Micheal</h4>
-                                <div class="text-[13px]">No way 🤙! · 11 Mar</div>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-            </div>
-            
-            <button class="absolute bottom-5 right-5 inline-flex items-center text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-full text-center px-3 py-2 shadow-lg focus:outline-none focus-visible:ring-2">
-                <svg class="w-3 h-3 fill-current text-indigo-300 flex-shrink-0 mr-2" viewBox="0 0 12 12">
-                    <path d="M11.866.146a.5.5 0 0 0-.437-.139c-.26.044-6.393 1.1-8.2 2.913a4.145 4.145 0 0 0-.617 5.062L.305 10.293a1 1 0 1 0 1.414 1.414L7.426 6l-2 3.923c.242.048.487.074.733.077a4.122 4.122 0 0 0 2.933-1.215c1.81-1.809 2.87-7.94 2.913-8.2a.5.5 0 0 0-.139-.439Z" />
-                </svg>
-                <span>New Chat</span>
-            </button>
-        </div>
-    </div>
-</section>
-                
-                
-            </div>
-        </div>
-    </div>
 </div>
 
 

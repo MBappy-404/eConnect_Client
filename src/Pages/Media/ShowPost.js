@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useContext } from 'react';
 import { FaThumbsUp } from "react-icons/fa";
 import { FaCommentAlt } from "react-icons/fa";
@@ -7,13 +7,19 @@ import { FaLocationArrow,FaGlobe,FaCog } from "react-icons/fa";
 import { AuthContext } from '../../AuthProvider/Auth';
 import '../../App.css'
 import moment from 'moment/moment';
+import { toast } from 'react-toastify';
+import { Comment } from 'react-loader-spinner';
 // import { useQuery } from '@tanstack/react-query';
 
 
 const ShowPost = ({publicPost,refetch}) => {
      const {user} = useContext(AuthContext);
+     const [loading3, setLoading3] = useState();
      const {image,post, _id, postUser,time,postUserPhoto,comment,like} = publicPost;
-    
+     // console.log(time);
+     let times = moment(`${time}`).fromNow();
+     console.log(times);
+
 
      const handleLikeIncrease = () =>{
           
@@ -26,6 +32,7 @@ const ShowPost = ({publicPost,refetch}) => {
           .then(data => {
                // console.log(data);
                if(data.acknowledged){
+                     
                     refetch()
                }
           })
@@ -37,13 +44,11 @@ const ShowPost = ({publicPost,refetch}) => {
 
      //comment 
      const handleComment = (event) => {
-          // const getComment = document.getElementById('commentValue');
-          // const commentValue = getComment.value
-          // getComment.value = ''
-          // console.log(commentValue);
-
+          
+          setLoading3(true)
           event.preventDefault()
 
+         if(user){
           const form = event.target;
           const commentValue = form.comment.value
 
@@ -72,11 +77,18 @@ const ShowPost = ({publicPost,refetch}) => {
           .then(res => res.json())
           .then(data => {
                console.log(data);
+               
                if(data.acknowledged){
                     form.reset()
                     refetch()
+                    setLoading3(false)
+                   
                }
           })
+         }
+         else{
+          toast.warning( "Please Login or SignUp");
+         }
      }
      return (
           <div>
@@ -88,6 +100,8 @@ const ShowPost = ({publicPost,refetch}) => {
                                    <b class=" capitalize">{ postUser}</b>
                                    <time class="text-gray-500 text-sm">
                                        {moment(`${time}`).fromNow()}
+                                   
+                                       
                                        
                                    <div data-tip="Public " className='inline tooltip'><FaGlobe data-tip="hello" className=' inline ml-2'></FaGlobe></div>
                                    </time>
@@ -148,18 +162,49 @@ const ShowPost = ({publicPost,refetch}) => {
                           </div>
                               <div class="text-sm">Share</div>
                          </div>
-
                     </div>
                     <div>
 
                      
                       <div class="container  mx-auto px-0 md:px-3 flex flex-col py-2  justify-center ">
-                    
-                        
                          {
                               comment?.length ? <>
                               {
-                        comment &&  comment.slice(0).reverse().slice(0,3).map(comments=> 
+                             loading3 ? <><Comment
+                             visible={true}
+                             height="35"
+                             width="35"
+                             ariaLabel="comment-loading"
+                             wrapperStyle={{}}
+                             wrapperClass="comment-wrapper"
+                             color="#fff"
+                             backgroundColor="#F4442E"
+                           /> {comment.slice(0).reverse().slice(0,3).map(comments=> 
+                              
+                              <div class="bg-gray-100 w-full mt-2 flex items-center p-1 rounded-lg">
+                              <div class="flex items-center">
+                                <img src={ comments.userPhoto} alt="img" class="w-8 h-8 rounded-full"/>
+                              </div>
+                              <div class="flex-grow p-3">
+                                <div class="font-semibold text-sm md:text-md text-gray-800">
+                                 {comments.userName}
+                                </div>
+                                <div class="text-xs md:text-sm    text-gray-600">
+                                <p>{
+                                   comments.comment.length > 15 ? <>
+                                    {comments.comment.slice(0,15)}....<span className='font-semibold cursor-pointer text-gray-700'>see more</span>
+                                   </> : <>
+                                   {comments.comment}
+                                   </>
+                                   } </p>
+                                </div>
+                              </div>
+                              <div>
+                               <p className='text-xs mt-10 mr-2 text-gray-500' >{moment(`${comments.time}`).fromNow()}</p>
+                              </div>
+                            </div>
+                              
+                              )} </> :  comment &&  comment.slice(0).reverse().slice(0,3).map(comments=> 
                               
                               <div class="bg-gray-100 w-full mt-2 flex items-center p-1 rounded-lg">
                               <div class="flex items-center">
@@ -185,7 +230,7 @@ const ShowPost = ({publicPost,refetch}) => {
                             </div>
                               
                               )
-                       }
+                             }
                               
                               </> : <><h1 className='text-sm '>No comment available...</h1></>
                          }
@@ -208,8 +253,6 @@ const ShowPost = ({publicPost,refetch}) => {
                          {/* <input type="submit" id='submit' className='bg-gray-400 p-3 text-sm -ml-8 rounded-3xl' /> */}
                         
                      </form>
-                         
-                        
 				</div>
 			</div>
 

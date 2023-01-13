@@ -2,6 +2,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../AuthProvider/Auth';
 
 
@@ -24,10 +25,12 @@ const SignIn = () => {
                     const user = result.user;
                     console.log(user)
                     navigate(from, { replace: true });
+                    toast.success( "Login Success");
 
                })
                .catch(err => {
                     setLoginError(err.message);
+                    toast.error( "Something is wrong");
                     console.log(err.message);
                })
      }
@@ -56,11 +59,13 @@ const SignIn = () => {
                               console.log(data);
                               if (data.acknowledged) {
                                    navigate('/')
+                                   toast.success( "Login Success");
                               }
                          })
                })
                .catch(err => {
                     console.log(err.message);
+                    toast.error( "Something is wrong");
                     setLoginError(err.message)
                })
      }

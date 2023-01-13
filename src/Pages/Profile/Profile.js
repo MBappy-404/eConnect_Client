@@ -10,22 +10,20 @@ const Profile = () => {
      return (
           <div>
                
-<div class="w-full relative  px-3   md:px-10 pt-16 overflow-hidden">
+<div class="w-full relative  px-3   md:px-10 pt-1 overflow-hidden">
   <div class="top h-64 w-full bg-blue-600 overflow-hidden relative" >
     <img src={user?.photoURL} alt="" class="bg w-full h-full object-cover object-center absolute z-0"/>
     <div class="flex flex-col justify-center items-center relative h-full bg-black bg-opacity-50 text-white">
-      <img src={user?.photoURL} class="h-24 w-24 object-cover rounded-full"/>
+      <img src={user?.photoURL} class="h-24 w-24 object-cover rounded-full" alt='img'/>
       <h1 class="text-2xl font-semibold">{user?.displayName}</h1>
       {/* <h4 class="text-sm font-semibold">Joined Since '19</h4> */}
     </div>
   </div>
   <div class="grid grid-cols-12 bg-white ">
 
-    <div class="col-span-12 w-full px-3 py-6 justify-center flex space-x-4 border-b border-solid md:space-x-0 md:space-y-4 md:flex-col md:col-span-2 md:justify-start ">
+    <div class="col-span-12 w-full px-3 py-6 justify-center flex space-x-4 border-b border-solid md:space-x-0 md:space-y-4 md:flex-col md:col-span-12  md:justify-start ">
 
-      <a href="#" class="text-sm p-2 bg-indigo-900 text-white text-center rounded font-bold">Basic Information</a>
-
-      <a href="#" class="text-sm p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">Another Information</a>
+       
 
       <label htmlFor="my-modal-6"  class="text-sm cursor-pointer p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">Edit Profile</label>
 
@@ -34,7 +32,7 @@ const Profile = () => {
 
 {/* Put this part before </body> tag */}
 <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-<div className="modal modal-bottom sm:modal-middle">
+<div className="modal">
   <div className="modal-box">
     { <About></About> }
     <div className="modal-action">
