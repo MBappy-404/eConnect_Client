@@ -22,7 +22,7 @@ const Media = () => {
      return (
 
 
-         <div className=''>
+         <div className=' mt-14 lg:mt-0'>
            <main class="h-full w-full  grid grid-cols-1 px-2">
            <div>
                 <h1 className='text-xl text-center mt-5  text-gray-700 font-bold'>Public Posts</h1>

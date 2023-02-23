@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import { FaThumbsUp } from "react-icons/fa";
+import { FaCheckCircle, FaThumbsUp } from "react-icons/fa";
 import { FaCommentAlt } from "react-icons/fa";
 import { FaShare } from "react-icons/fa";
 import { FaLocationArrow,FaGlobe,FaCog } from "react-icons/fa";
@@ -15,7 +15,9 @@ import { Comment } from 'react-loader-spinner';
 const ShowPost = ({publicPost,refetch}) => {
      const {user} = useContext(AuthContext);
      const [loading3, setLoading3] = useState();
-     const {image,post, _id, postUser,time,postUserPhoto,comment,like} = publicPost;
+     const {image,post, _id, postUser,time,postUserPhoto,comment,like,
+          userEmail
+          } = publicPost;
      // console.log(time);
      let times = moment(`${time}`).fromNow();
      console.log(times);
@@ -95,9 +97,9 @@ const ShowPost = ({publicPost,refetch}) => {
                <div class="border w-full  md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto  rounded-2xl p-4">
                     <div class="flex items-center	justify-between">
                          <div class="gap-3.5	flex items-center ">
-                              <img src={postUserPhoto} alt='img' className='w-12 h-12 ring-1 ring-primary  rounded-full'/>
+                             {postUserPhoto? <> <img src={postUserPhoto} alt='img' className='w-12 h-12 ring-1   rounded-full'/></>:  <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img' className='w-12 h-12 ring-1   rounded-full'/>}
                               <div class="flex flex-col">
-                                   <b class=" capitalize">{ postUser}</b>
+                               <b class=" capitalize">{userEmail === 'sadikulsad0810@gmail.com' ? <>{postUser} <FaCheckCircle className='inline w-4 h-4 text-blue-700' /> </> : <>{ postUser}</> } </b>
                                    <time class="text-gray-500 text-sm">
                                        {moment(`${time}`).fromNow()}
                                    
@@ -183,7 +185,7 @@ const ShowPost = ({publicPost,refetch}) => {
                               
                               <div class="bg-gray-100 w-full mt-2 flex items-center p-1 rounded-lg">
                               <div class="flex items-center">
-                                <img src={ comments.userPhoto} alt="img" class="w-8 h-8 rounded-full"/>
+                                <img src={ comments.userPhoto} alt="img" class="w-8 h-8 ring-1 rounded-full"/>
                               </div>
                               <div class="flex-grow p-3">
                                 <div class="font-semibold text-sm md:text-md text-gray-800">
@@ -208,7 +210,7 @@ const ShowPost = ({publicPost,refetch}) => {
                               
                               <div class="bg-gray-100 w-full mt-2 flex items-center p-1 rounded-lg">
                               <div class="flex items-center">
-                                <img src={ comments.userPhoto} alt="img" class="w-8 h-8 rounded-full"/>
+                               { comments.userPhoto ? <> <img src={ comments.userPhoto} alt="img" class="w-8 h-8 ring-1 rounded-full"/></>:  <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt="img" class="w-8 h-8 ring-1 rounded-full"/>}
                               </div>
                               <div class="flex-grow p-3">
                                 <div class="font-semibold text-sm md:text-md text-gray-800">
@@ -244,11 +246,11 @@ const ShowPost = ({publicPost,refetch}) => {
                     </div>
                     <div class="flex items-center justify-start  mt-4">
 				{/* <img src={user?.photoURL}  class=" rounded-full w-10 h-10 object-cover border" alt='img'/> */}
-                    {user?  <> <img src={user?.photoURL}  alt="" class=" rounded-full w-10 h-10 object-cover border" /></> : <><img class=" rounded-full w-10 h-10 object-cover border" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img'/></>}
-				<div class="flex items-center 	md:justify-between	 ml-2  md:w-9/12  rounded-3xl bg-gray-200	 overflow-hidden px-2 ">
-				 <form onSubmit={handleComment} >
-                     <input  type="text" id='commentValue'  class="text-sm p-3 text-gray-700 md:p-3 w-40 md:w-70 lg:w-72 rounded-3xl    outline-none bg-gray-200 " placeholder="Write your comment..." name="comment" required/>
-                     <button type='submit'> <FaLocationArrow className='mr-5 md:mr-0 ml-0 md:ml-10 lg:ml-0 w-4 h-4 md:w-5 md:h-5 inline animation rotate-45'></FaLocationArrow></button>
+                    {user && user.photoURL ?  <> <img src={user?.photoURL}  alt="" class=" rounded-full w-10 h-10 object-cover border" /></> : <><img class=" rounded-full w-10 h-10 object-cover border" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img'/></>}
+				<div class="flex items-center md:justify-between ml-2  md:w-7/12 lg:w-9/12  rounded-3xl bg-gray-200	 overflow-hidden px-2 ">
+				 <form onSubmit={handleComment}>
+                     <input  type="text" id='commentValue'  class="text-sm p-3 text-gray-700 md:p-3 w-40 md:w-72 lg:w-72 rounded-3xl    outline-none bg-gray-200 " placeholder="Write your comment..." name="comment" required/>
+                     <button type='submit'> <FaLocationArrow className='mr-5 md:mr-0 ml-0 md:ml-16 lg:ml-0 w-4 h-4 md:w-5 md:h-5 inline animation rotate-45'></FaLocationArrow></button>
                          {/* <label htmlFor="submit">Submit</label> */}
                          {/* <input type="submit" id='submit' className='bg-gray-400 p-3 text-sm -ml-8 rounded-3xl' /> */}
                         

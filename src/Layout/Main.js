@@ -10,7 +10,14 @@ import { AuthContext } from '../AuthProvider/Auth';
 
 const Main = () => {
 
-     const{user} = useContext(AuthContext)
+    const{user,logOut} = useContext(AuthContext)
+     const handleLogOut = () => {
+          logOut()
+               .then()
+               .catch()
+
+     }
+     
        
       
      const nav_items = [
@@ -30,7 +37,7 @@ const Main = () => {
           icon: <svg stroke="currentColor" fill="currentColor" stroke-width="0.2" version="1.1" viewBox="0 0 17 17" class="i" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><g></g><path d="M0 13h15v1h-15v-1zM0 15.993h10v-1h-10v1zM17 1v11h-17v-11h17zM16 2h-15v9h15v-9z"></path></svg> ,
         },
         {
-          path: '/about',
+          path: '/video',
           nav_item: 'Watch',
           icon: <svg viewBox="0 0 28 28" class="x1lliihq x1k90msu x2h7rmj x1qfuztq x5e5rjt" fill="currentColor" height="28" width="28"><path d="M8.75 25.25C8.336 25.25 8 24.914 8 24.5 8 24.086 8.336 23.75 8.75 23.75L19.25 23.75C19.664 23.75 20 24.086 20 24.5 20 24.914 19.664 25.25 19.25 25.25L8.75 25.25ZM17.164 12.846 12.055 15.923C11.591 16.202 11 15.869 11 15.327L11 9.172C11 8.631 11.591 8.297 12.055 8.576L17.164 11.654C17.612 11.924 17.612 12.575 17.164 12.846M21.75 2.75 6.25 2.75C4.182 2.75 2.5 4.432 2.5 6.5L2.5 18C2.5 20.068 4.182 21.75 6.25 21.75L21.75 21.75C23.818 21.75 25.5 20.068 25.5 18L25.5 6.5C25.5 4.432 23.818 2.75 21.75 2.75"></path></svg> ,
         },
@@ -61,7 +68,7 @@ const Main = () => {
             <div class="hidden  mt-20 md:hidden lg:block  ">
                     <div className=' h-full     mx-auto     w-[100%]  '>
                          <div class="mt-5 px-8 text-center">
-                             {user?  <> <img src={user?.photoURL}  alt="" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" /></> : <><img class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img'/></>}
+                             {user && user.photoURL ?  <> <img src={user?.photoURL}  alt="" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" /></> : <><img class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img'/></>}
                               <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
                                    {user? <>{user?.displayName}</>: <>Anonymous</>}
                                    </h5>
@@ -71,77 +78,68 @@ const Main = () => {
                          <div >
                          <ul class="px-8  mt-4">
                               <li>
-                                   <a href=" " aria-label="dashboard" class="relative  px-4 py-3 flex items-center space-x-4 rounded-xl text-gray-600 hover:bg-gray-300 to-cyan-400">
+                              <Link to='/profile'><a href=" " aria-label="dashboard" class="relative  px-4 py-3 flex items-center space-x-4 rounded-xl text-gray-600 hover:bg-gray-300 to-cyan-400">
                                        <FaUserCircle className='text-gray-400 w-5 h-5' ></FaUserCircle >
-                                        <span class="-mr-1 font-medium"><Link to='/profile'>Profile</Link></span>
-                                   </a>
+                                        <span class="-mr-1 font-medium">Profile</span>
+                                   </a></Link>
                               </li>
                               <li>
-                                   <Link class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                                   <Link to='/saved' class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                              <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                                              <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                                         </svg>
-                                        <span class="group-hover:text-gray-700"><Link to='/saved'>Saved</Link></span>
+                                        <span class="group-hover:text-gray-700 font-medium">Saved</span>
                                    </Link>
                               </li>
                               <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                              <Link to='/report'><a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                              <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
                                              <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
                                         </svg>
-                                        <span class="group-hover:text-gray-700"><Link to='/report'>Reports</Link></span>
-                                   </a>
+                                        <span class="group-hover:text-gray-700 font-medium">Reports</span>
+                                   </a></Link>
                               </li>
                               <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                              <Link to='/people'> <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                                    <FaUserFriends className='w-5 h-5' ></FaUserFriends>
-                                        <span class="group-hover:text-gray-700"><Link to='/people'>People</Link></span>
-                                   </a>
+                                        <span class="group-hover:text-gray-700 font-medium">People</span>
+                                   </a></Link>
                               </li>
+                           
                               <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                   <FaFacebookMessenger className='w-5 h-5' ></FaFacebookMessenger>  
-                                        <span class="group-hover:text-gray-700">Message</span>
-                                   </a>
-                              </li>
-                              <li>
-                                   <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                                   <a  class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                                    <button class="  flex items-center space-x-4 rounded-md text-gray-600 group">
                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                               </svg>
-                              <span class="group-hover:text-gray-700">Logout</span>
+                              <span onClick={handleLogOut} class="group-hover:text-gray-700 font-medium">Logout</span>
                          </button>
                                    </a>
                               </li>
                          </ul>
-                         </div>
-                         
+                         </div>       
                     </div>
-
-                   
                </div>
-
             </div>
-
-
         </div>
         
-        <div class="w-full lg:w-6/12 h-full border-r pb-5">
-            <div class="flex py-4 px-4  md:flex lg:hidden  border-b bg-white items-center justify-between">
+        <div class="w-full  lg:w-6/12 h-full border-r pb-5">
+            <div className='flex justify-center'>
+            <div class="flex py-4 px-4 mb-2 fixed rounded-b-xl shadow-lg w-full  md:w-[750px]  z-20 top-16 gap-0  md:flex lg:hidden  border-b bg-white items-center justify-between">
             {nav_items.map((e, i) => (
           <NavLink
             key={i}
             to={e.path}
             activeStyle={{ color: "red"}}
-            className={({ isActive }) => isActive ? 'text-blue-600' : ''}>
+            className={({ isActive }) => isActive ? 'text-blue-600 ' : ''}>
             <span  >{e.icon}</span>
              
           </NavLink>
         ))}
                  
+            </div>
             </div>
               
      <Outlet></Outlet>
@@ -158,9 +156,7 @@ const Main = () => {
                 <div class="flex justify-between items-center mb-3">
                     
                     <div class="flex items-center">
-                        {/* <a class="inline-flex items-start mr-3" href="#0">
-                            {user? <><img class="rounded-full" src={user.photoURL} width="48" height="48" alt="Lauren Marsano" /></>:<img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='' />}
-                        </a> */}
+                       
                         <div class="pr-1">
                             <a class="inline-flex text-gray-800 hover:text-gray-900" href="#0">
                                 <h2 class="text-xl leading-snug font-bold">Messages</h2>

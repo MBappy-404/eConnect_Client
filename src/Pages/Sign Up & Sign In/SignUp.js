@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../AuthProvider/Auth';
 
 const SignUp = () => {
@@ -44,6 +45,7 @@ const SignUp = () => {
                name,
                email,
                password,
+               photoURL:''
                 
           };
 
@@ -58,6 +60,7 @@ const SignUp = () => {
                .then(data => {
                     console.log(data);
                     navigate('/')
+                    toast.success( " Welcome to eSomaz ");
                     
                })
      }
@@ -71,6 +74,7 @@ const SignUp = () => {
                     console.log(user);
                     const userData = {
                          name: user?.displayName,
+                         photoURL:user?.photoURL,
                          email: user?.email,
                     }
 
@@ -86,6 +90,7 @@ const SignUp = () => {
                               console.log(data);
                               if (data.acknowledged) {
                                    navigate('/')
+                                   toast.success( " Welcome to eSomaz ");
                               }
                          })
                })

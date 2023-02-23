@@ -12,17 +12,19 @@ import People from "../Pages/People/People";
 import Saved from "../Pages/Saved/Saved";
 import Report from "../Pages/Report/Report";
 import Notification from "../Pages/Notification/Notification";
+import Video from "../Pages/Video/Video";
 
 const router = createBrowserRouter([
      {
           path:'/',
           element: <Main></Main>,
           children:[
-
+              
                {
                     path:'/',
-                    element:<Home></Home>
+                    element: <Home></Home>
                },
+              
                {
                     path: '/home',
                     element: <Home></Home>
@@ -64,10 +66,19 @@ const router = createBrowserRouter([
                {
                     path: '/notification',
                     element: <Notification></Notification>
+               },
+               {
+                    path: '/chat',
+                    element: <ChatBox></ChatBox>
+               },
+               {
+                    path:'/video',
+                    element: <Video></Video>
                }
                
           ]
      },
+    
      {
           path: '/signIn',
           element: <SignIn></SignIn>

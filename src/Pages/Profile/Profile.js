@@ -1,5 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/Auth';
 import About from '../About/About';
 
@@ -25,21 +26,7 @@ const Profile = () => {
 
        
 
-      <label htmlFor="my-modal-6"  class="text-sm cursor-pointer p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">Edit Profile</label>
-
-      {/* The button to open modal */}
-
-
-{/* Put this part before </body> tag */}
-<input type="checkbox" id="my-modal-6" className="modal-toggle" />
-<div className="modal">
-  <div className="modal-box">
-    { <About></About> }
-    <div className="modal-action">
-      <label htmlFor="my-modal-6" className="btn ">Update</label>
-    </div>
-  </div>
-</div>
+      <label htmlFor="my-modal-6"  class="text-sm cursor-pointer p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200"><Link to='/about'>Edit Profile</Link></label>
 
     </div>
 
