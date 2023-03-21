@@ -25,7 +25,7 @@ const Media = () => {
          <div className=' mt-14 lg:mt-0'>
            <main class="h-full w-full  grid grid-cols-1 px-2">
            <div>
-                <h1 className='text-xl text-center mt-5  text-gray-700 font-bold'>Public Posts</h1>
+                <h1 className='  mt-5 text-blue-500  font-bold text-center text-xl  text-gray-700 '>Public Posts</h1>
             </div> 
                
               { loading ? <div className='mb-40'>

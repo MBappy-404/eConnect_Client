@@ -39,10 +39,10 @@ const Home = () => {
 
      
 
+
+
       
      const handlePost = (data) => {
-
-       
 
           if(user){
     
@@ -84,7 +84,8 @@ const Home = () => {
            //create post  with image
           const formData = new FormData();
           formData.append('image', image);
-          // console.log(formData);
+         
+         
               
                fetch("https://api.imgbb.com/1/upload?key=f2c11278b0c7405521c7d060f7caf053", {
                     method: 'POST',
@@ -299,7 +300,7 @@ const Home = () => {
              {/* show home page posts  */}
             <main class="h-full w-full px-2">  
             <div>
-                <h1 className='text-xl text-center mt-5 text-gray-700 font-bold'>Popular Posts</h1>
+                <h1 className= 'text-blue-500    text-center text-xl mt-5 font-bold'>Popular Posts</h1>
                  
             </div>                
                  {loading2?  <div className='flex justify-center mt-5 mb-20'>

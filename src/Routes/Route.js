@@ -13,6 +13,8 @@ import Saved from "../Pages/Saved/Saved";
 import Report from "../Pages/Report/Report";
 import Notification from "../Pages/Notification/Notification";
 import Video from "../Pages/Video/Video";
+import PostDetails from "../Pages/Media/PostDetails";
+ 
 
 const router = createBrowserRouter([
      {
@@ -32,6 +34,12 @@ const router = createBrowserRouter([
                {
                     path: '/media',
                     element: <Media></Media>
+               },
+               {
+                    path: '/postDetails/:id',
+                    element: <PostDetails></PostDetails>,
+                    loader:  ({params}) => fetch(`https://e-somaz-server.vercel.app/postDetails/${params.id}`),
+
                },
                {
                     path: '/about',
@@ -63,6 +71,8 @@ const router = createBrowserRouter([
                     path: '/report',
                     element: <Report></Report>
                },
+             
+              
                {
                     path: '/notification',
                     element: <Notification></Notification>
