@@ -12,8 +12,14 @@ import People from "../Pages/People/People";
 import Saved from "../Pages/Saved/Saved";
 import Report from "../Pages/Report/Report";
 import Notification from "../Pages/Notification/Notification";
-import Video from "../Pages/Video/Video";
 import PostDetails from "../Pages/Media/PostDetails";
+import Earning from "../Pages/Earn/Earning";
+import CreatePost from "../Pages/CreatePost/CreatePost";
+import PrivateRoute from "./PrivateRoute ";
+import Story from "../Pages/Story/Story";
+import CreateStory from "../Pages/Story/CreateStory";
+import Room from "../Pages/Room/Room";
+import JoinRoom from "../Pages/Room/JoinRoom";
  
 
 const router = createBrowserRouter([
@@ -39,7 +45,6 @@ const router = createBrowserRouter([
                     path: '/postDetails/:id',
                     element: <PostDetails></PostDetails>,
                     loader:  ({params}) => fetch(`https://e-somaz-server.vercel.app/postDetails/${params.id}`),
-
                },
                {
                     path: '/about',
@@ -48,8 +53,7 @@ const router = createBrowserRouter([
               
                {
                     path:'/profile',
-                    element: <Profile></Profile>
-                    
+                    element: <PrivateRoute> <Profile></Profile></PrivateRoute>
                },
                {
                     path:'/watch',
@@ -65,25 +69,45 @@ const router = createBrowserRouter([
                },
                {
                     path: '/saved',
-                    element: <Saved></Saved>
+                    element: <PrivateRoute><Saved></Saved></PrivateRoute>
                },
                {
                     path: '/report',
-                    element: <Report></Report>
+                    element: <PrivateRoute><Report></Report></PrivateRoute>
                },
-             
-              
                {
                     path: '/notification',
-                    element: <Notification></Notification>
+                    element: <PrivateRoute><Notification></Notification></PrivateRoute>
                },
                {
                     path: '/chat',
                     element: <ChatBox></ChatBox>
                },
                {
-                    path:'/video',
-                    element: <Video></Video>
+                    path: '/createPost',
+                    element: <CreatePost></CreatePost>
+
+               },
+               {
+                    path: '/story',
+                    element: <Story></Story>
+               },
+               {
+                    path: '/createStory',
+                    element: <CreateStory></CreateStory>
+               },
+               {
+                    path:'/joinRoom',
+                    element: <JoinRoom></JoinRoom>
+
+               },
+               {
+                    path:'/room',
+                    element: <PrivateRoute><Room></Room></PrivateRoute>
+               },
+               {
+                    path:'/earn',
+                    element: <PrivateRoute><Earning></Earning></PrivateRoute>
                }
                
           ]

@@ -9,12 +9,12 @@ import '../../App.css'
 import moment from 'moment/moment';
 import { toast } from 'react-toastify';
 import { Comment } from 'react-loader-spinner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import ReportModal from '../Report/ReportModal';
 // import { useQuery } from '@tanstack/react-query';
 
 
-const ShowPost = ({publicPost,refetch}) => {
+const ShowPost = ({publicPost,refetch,setLoading2}) => {
      const {user} = useContext(AuthContext);
      const [loading3, setLoading3] = useState();
      const {image,post, _id, postUser,time,postUserPhoto,comment,like,
@@ -22,6 +22,7 @@ const ShowPost = ({publicPost,refetch}) => {
           } = publicPost;
      // console.log(time);
      let times = moment(`${time}`).fromNow();
+     const navigate = useNavigate()
      console.log(times);
 
 
@@ -38,6 +39,7 @@ const ShowPost = ({publicPost,refetch}) => {
                if(data.acknowledged){
                      
                     refetch()
+                    setLoading2(false)
                }
           })
      }
@@ -86,6 +88,7 @@ const ShowPost = ({publicPost,refetch}) => {
                     form.reset()
                     refetch()
                     setLoading3(false)
+                    setLoading2(false)
                    
                }
           })
@@ -118,7 +121,7 @@ const ShowPost = ({publicPost,refetch}) => {
                     }
                })
      }
-     const handleSubmit = (event) =>{
+     const handleReport = (event) =>{
 
           event.preventDefault()
           const form = event.target;
@@ -146,8 +149,9 @@ const ShowPost = ({publicPost,refetch}) => {
           .then(data => {
                // console.log(data);
                if(data.acknowledged){
-                     
+                    navigate('/media')
                     toast.success( "Reported successfully");
+
                }
           })
 
@@ -178,6 +182,7 @@ const ShowPost = ({publicPost,refetch}) => {
                                         d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                               </svg></label>
                                  <ul tabIndex={0} className="dropdown-content menu p-2  font-semibold shadow-2xl shadow-gray-500 border bg-gray-100  rounded-box w-52 ">
+                                   {/* post action  */}
                                    <li onClick={handleSaved}><a>Save Post</a></li>
                                    <label htmlFor={`report-modal-${_id}`} ><li><a>Report Post</a></li></label>
                                  </ul>
@@ -195,7 +200,7 @@ const ShowPost = ({publicPost,refetch}) => {
                                 <div class="text-3xl mb-6 text-center ">
                                 </div>
                                 <div class="grid grid-cols-1 gap-2 max-w-xl m-auto">
-                                  <form onSubmit={handleSubmit}>
+                                  <form onSubmit={handleReport}>
                                     <div class="col-span-2 lg:col-span-1">
                                       <select name='selectedReport'required className=" border-gray-400  border-solid border-2 p-3 md:text-xl w-full">
                                         <option disabled selected>Please select a problem</option>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../AuthProvider/Auth';
 
-const ShowSaved = ({saved, refetch}) => {
+const ShowSaved = ({saved, refetch,setLoading}) => {
 
      const {user} = useContext(AuthContext);
      const [loading3, setLoading3] = useState();
@@ -24,6 +24,7 @@ const ShowSaved = ({saved, refetch}) => {
                if(data.acknowledged){
                      
                     refetch()
+                    setLoading(false)
                }
           })
      }
@@ -72,6 +73,7 @@ const ShowSaved = ({saved, refetch}) => {
                     form.reset()
                     refetch()
                     setLoading3(false)
+                    setLoading(false)
                    
                }
           })

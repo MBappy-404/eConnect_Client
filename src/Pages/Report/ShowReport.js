@@ -6,7 +6,7 @@ import { Comment } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-const ShowReport = ({report,refetch}) => {
+const ShowReport = ({report,refetch,setLoading}) => {
      const {user} = useContext(AuthContext);
      const [loading3, setLoading3] = useState();
      const {image,post, _id, postUser,time,postUserPhoto,comment,like,userEmail,Reports } = report;
@@ -22,8 +22,9 @@ const ShowReport = ({report,refetch}) => {
           .then(data => {
                // console.log(data);
                if(data.acknowledged){
-                     
+                    
                     refetch()
+                    setLoading(false)
                }
           })
      }
@@ -51,11 +52,11 @@ const ShowReport = ({report,refetch}) => {
                          </div>
 
                          <div>
-                         <div className="dropdown no-animation   dropdown-end">
-                           <label tabIndex={_id} className="btn btn-sm m-1">See Report</label>
+                         <div className="dropdown no-animation   z-10 dropdown-end">
+                           <label tabIndex={_id} className="btn btn-sm m-1">See Reports</label>
                            <ul tabIndex={_id} className="dropdown-content bg-gray-100 menu p-2 shadow rounded-box w-52">
                             {
-                              Reports.map((report,i) =>  <li className=' border rounded-xl  border-gray-300 border-solid'>  <a>'{report.selectReport}' <br /> -{report.reporterName}- </a></li>)
+                              Reports.map((report,i) =>  <li className=' mt-1 border bg-red-500 text-white rounded-xl'>  <a>'{report.selectReport}' <br /> -{report.reporterName}- </a></li>)
                             }
                            </ul>
                          </div>

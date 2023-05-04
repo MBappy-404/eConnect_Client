@@ -4,9 +4,9 @@ const About = () => {
      return (
           <div className='px-2'>
             
-<div class=" mx-auto py-14 ml-0 nd:ml-0 lg:ml-1">
+<div class=" mx-auto py-14 ml-0 md:ml-0 lg:ml-1">
   
-   <h1 className='text-2xl font-bold mb-5 text-center '>Update Your Info</h1>
+   <h1 className='text-2xl font-bold mb-5 text-center mt-10 md:mt-0 '>Update Your Info</h1>
 	<form className='bg-white px-10 py-10 m-auto rounded-2xl'>
 		<div class="relative z-0 mb-6 w-full group">
 			<input type="email" name="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-600 font-semibold bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />

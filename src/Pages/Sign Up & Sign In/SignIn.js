@@ -51,6 +51,7 @@ const SignIn = () => {
                     const userData = {
                          name: user?.displayName,
                          email: user?.email,
+                         photo: user?.photoURL
                     }
 
                     fetch('https://e-somaz-server.vercel.app/users', {
