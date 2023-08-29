@@ -74,19 +74,19 @@ const SignUp = () => {
   return (
     <div className='bg-gradient-to-t from-zinc-900 via-violet-600 to-indigo-600 py-24 md:py-20 text-white'>
 
-      <div class="   mx-3 md:mx-40 rounded-2xl   sm:rounded-2xl flex justify-center flex-1">
-        <div class="lg:w-1/2 py-10">
-          <div class="mt-2 flex flex-col items-center">
-            <h1 class="text-2xl  font-bold">
+      <div className="   mx-3 md:mx-40 rounded-2xl   sm:rounded-2xl flex justify-center flex-1">
+        <div className="lg:w-1/2 py-10">
+          <div className="mt-2 flex flex-col items-center">
+            <h1 className="text-2xl  font-bold">
              Create New Account
             </h1>
-            <div class="w-full flex-1 mt-4">
-              <div class="flex flex-col px-5 md:px-12 items-center">
+            <div className="w-full flex-1 mt-4">
+              <div className="flex flex-col px-5 md:px-12 items-center">
               </div>
-              <div class="mx-auto px-5 md:px-12 ">
+              <div className="mx-auto px-5 md:px-12 ">
                 <form onSubmit={handleSubmit(handleSignup)}>
                   <input
-                    class="w-full mb-5 px-8  text-gray-600 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full mb-5 px-8  text-gray-600 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
                     {...register("name", {
                       required: "Name  is required"
@@ -94,7 +94,7 @@ const SignUp = () => {
                     placeholder="Name"
                   /> <span className='text-red-300 -mt-4 '> {errors.name && <p role="alert">{errors.name?.message}</p>}</span>
                   <input
-                    class="w-full  text-gray-600  px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full  text-gray-600  px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="email"
                     {...register("email", {
                       required: "Email Address is required"
@@ -102,7 +102,7 @@ const SignUp = () => {
                     placeholder="Email"
                   /> <span className='text-red-300 '> {errors.email && <p role="alert">{errors.email?.message}</p>}</span>
                   <input
-                    class="w-full  text-gray-600 px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    className="w-full  text-gray-600 px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="password"
                     {...register("password", {
                       required: "Password is required",
@@ -115,10 +115,10 @@ const SignUp = () => {
                   {signUpError && <p className=' text-center font-bold text-red-400'>{signUpError}</p>}
                   {
                     loading ? <button
-                      class="mt-3 cursor-pointer tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"><ThreeDots height="24" width="50" radius="9" color="white" ariaLabel="three-dots-loading" wrapperStyle={{}} wrapperClassName="" visible={true}
+                      className="mt-3 cursor-pointer tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"><ThreeDots height="24" width="50" radius="9" color="white" ariaLabel="three-dots-loading" wrapperStyle={{}} wrapperClassName="" visible={true}
                       /></button> :
                       <button
-                        class="mt-3 cursor-pointer tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                        className="mt-3 cursor-pointer tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                         type='submit'>Sign Up</button>
                   }
                 </form>
@@ -126,14 +126,14 @@ const SignUp = () => {
                 <p className='text-sm text-center mt-3  font-semibold text-white'>Already have account? <span className='text-white font-extrabold'> <Link to={'/signIn'}>Log In</Link> </span></p>
 
                 {/* terms and policy */}
-                <p class="mt-6 text-xs  text-center">
+                <p className="mt-6 text-xs  text-center">
                   <input type="checkbox" className=' cursor-pointer mr-2' />
                   I agree to abide by eConnect
-                  <a href="#" class="border-b ml-1 mr-1 border-gray-500 border-dotted">
+                  <a href="#" className="border-b ml-1 mr-1 border-gray-500 border-dotted">
                     Terms of Service 
                   </a>
                   and its
-                  <a href="#" class="border-b ml-1 border-gray-500 border-dotted">
+                  <a href="#" className="border-b ml-1 border-gray-500 border-dotted">
                     Privacy Policy
                   </a>
                 </p>
@@ -142,9 +142,9 @@ const SignUp = () => {
           </div>
         </div>
 
-        <div class="flex-1    rounded-r-2xl  text-center hidden lg:flex">
+        <div className="flex-1    rounded-r-2xl  text-center hidden lg:flex">
           <div
-            class="m-12  xl:m-16 w-full bg-[url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')] r bg-contain bg-center bg-no-repeat"
+            className="m-12  xl:m-16 w-full bg-[url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')] r bg-contain bg-center bg-no-repeat"
 
           ></div>
         </div>
