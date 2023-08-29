@@ -1,96 +1,95 @@
-// import React from 'react';
-// import { useContext } from 'react';
-// import { useState } from 'react';
-// import { FaThumbsUp } from "react-icons/fa";
-// import { FaCommentAlt } from "react-icons/fa";
-// import { FaShare } from "react-icons/fa";
-// import { FaLocationArrow } from "react-icons/fa";
-// import { AuthContext } from '../../../AuthProvider/Auth';
+// import { useQuery } from '@tanstack/react-query';
+// import { Link } from 'react-router-dom';
+// import RightSideLoader from './RightSideLoader';
+// import { FaCheckCircle } from 'react-icons/fa';
 
-
-// const TopPost = ({publicPost}) => {
-//      const {user} = useContext(AuthContext);
-
-//      const [increaseLike, setIncreaseLike] = useState(0)
-//      const {image,post,  postUser,postUserPhoto} = publicPost;
-//      // console.log(postUserPhoto);
-
-//      const handleLikeIncrease = () =>{
-          
-//           setIncreaseLike(increaseLike + 1)
-//      }
-//      // const handleLike = () =>{
-
-//      //      document.getElementById('like').style.color = 'green'
-//      // }
-//      return (
-//           <div>
-//                <div class="border w-full  md:w-[400px] lg:w-[600px] bg-white mt-6 m-auto rounded-2xl p-4">
-//                     <div class="flex items-center	justify-between">
-//                          <div class="gap-3.5	flex items-center ">
-//                               <img src={postUserPhoto} alt='img' className='w-16 h-16 ring-1 ring-primary  rounded-full'/>
-//                               <div class="flex flex-col">
-//                                    <b class="mb-2 capitalize">{ postUser}</b>
-//                                    <time class="text-gray-400 text-xs">06 August at 09.15 PM
-//                                    </time>
-//                               </div>
-//                          </div>
-//                          <div class="bg-gray-100	rounded-full h-3.5 flex	items-center justify-center">
-//                               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="34px" fill="#92929D">
-//                                    <path d="M0 0h24v24H0V0z" fill="none" />
-//                                    <path
-//                                         d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-//                               </svg>
-//                          </div>
-//                     </div>
-//                     <div class="whitespace-pre-wrap mt-7">{post}</div>
-//                     <div class="mt-5 flex gap-2	 justify-center border-b pb-4 flex-wrap	">
-//                         {
-//                          image? <> <img src={image} className=' max-h-96 object-cover w-full ' alt="img"  /></> : ''
-//                         }
-
-//                     </div>
-//                     <div class=" h-16 border-b  flex items-center gap-1 md:gap-2 px-0 md:px-3 justify-between">
-//                     <div class="flex items-center	gap-2">
-//                               <FaThumbsUp  className='w-5 h-5 hover:scale-150 hover:-rotate-12 transition-all   cursor-pointer '  id='like' onClick={handleLikeIncrease} ></FaThumbsUp>
-//                               <div  class="text-sm">{increaseLike}</div>
-//                          </div>
-//                          <div class="flex items-center	gap-2	">
-//                               <FaCommentAlt className='w-5 h-5'></FaCommentAlt>
-//                               <div class="text-sm	">10 Comments</div>
-//                          </div>
-                       
-//                          <div class="flex items-center	gap-2">
-                            
-//                               {/* The button to open modal */}
-//                           <label htmlFor="my-modal-6" className="">  <FaShare title='Share Now' className='w-5 h-5 hover:animate-ping cursor-pointer'></FaShare></label>
-                          
-//                           {/* Put this part before </body> tag */}
-//                           <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-//                           <div className="modal modal-bottom sm:modal-middle">
-//                             <div className="modal-box">
-//                               <h3 className="font-bold text-lg">Share Your Timeline</h3>
-//                               <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
-//                               <div className="modal-action">
-//                                 <label htmlFor="my-modal-6" className="btn">Yay!</label>
-//                               </div>
+// const RightSideNav = () => {
+//     const { data: users = [] } = useQuery({
+//         queryKey: ['users'],
+//         queryFn: async () => {
+//             const res = await fetch('https://e-somaz-server.vercel.app/users');
+//             const data = await res.json();
+//             return data;
+//         }
+//     })
+//     return (
+//         <div class={` py-4 mx-auto  max-w-[400px] ${users?.length === 0 && 'w-[372px]' } break-all     hidden lg:block`}>
+//             <div class="sticky top-3 bg-white px-2 w-80 2xl:w-full  pt-3 rounded-2xl ">
+//                 <div class="flex flex-col    justify-center    text-gray-600 ">
+//                     <div>
+//                         <div class="relative max-w-[340px] mx-auto     rounded-lg">
+//                             <div class=" pb-0 px-5 border-b border-gray-300">
+//                                 <div class="flex justify-between items-center mb-3">
+//                                     <div class="flex items-center">
+//                                         <div class="pr-1">
+//                                             <a class="inline-flex text-gray-800 hover:text-gray-900" href="#0">
+//                                                 <h2 class="text-xl leading-snug font-bold">Messages</h2>
+//                                             </a>
+//                                         </div>
+//                                     </div>
+//                                     <div class="relative inline-flex items-center flex-shrink-0">
+//                                         <button class="text-gray-400 hover:text-gray-500 rounded-full focus:ring-0 outline-none focus:outline-none">
+//                                             <span class="sr-only">Settings</span>
+//                                             <svg class="w-4 h-4 mt-1 fill-current" viewBox="0 0 16 16">
+//                                                 <path d="m15.621 7.015-1.8-.451A5.992 5.992 0 0 0 13.13 4.9l.956-1.593a.5.5 0 0 0-.075-.611l-.711-.707a.5.5 0 0 0-.611-.075L11.1 2.87a5.99 5.99 0 0 0-1.664-.69L8.985.379A.5.5 0 0 0 8.5 0h-1a.5.5 0 0 0-.485.379l-.451 1.8A5.992 5.992 0 0 0 4.9 2.87l-1.593-.956a.5.5 0 0 0-.611.075l-.707.711a.5.5 0 0 0-.075.611L2.87 4.9a5.99 5.99 0 0 0-.69 1.664l-1.8.451A.5.5 0 0 0 0 7.5v1a.5.5 0 0 0 .379.485l1.8.451c.145.586.378 1.147.691 1.664l-.956 1.593a.5.5 0 0 0 .075.611l.707.707a.5.5 0 0 0 .611.075L4.9 13.13a5.99 5.99 0 0 0 1.664.69l.451 1.8A.5.5 0 0 0 7.5 16h1a.5.5 0 0 0 .485-.379l.451-1.8a5.99 5.99 0 0 0 1.664-.69l1.593.956a.5.5 0 0 0 .611-.075l.707-.707a.5.5 0 0 0 .075-.611L13.13 11.1a5.99 5.99 0 0 0 .69-1.664l1.8-.451A.5.5 0 0 0 16 8.5v-1a.5.5 0 0 0-.379-.485ZM8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+//                                             </svg>
+//                                         </button>
+//                                     </div>
+//                                 </div>
 //                             </div>
-//                           </div>
-//                               <div class="text-sm">Share</div>
-//                          </div>
+//                             <div class="py-3 px-5">
+//                                 <h3 class="text-xs font-semibold uppercase ml-1 text-gray-400 mb-1">Chats</h3>
+//                                 <div class="pb-3">
+//                                     {/* right side layout  */}
+//                                  {
+//                                     users?.length ? 
+//                                     <>
+//                                        {
+//                                         users.slice(0, 9).map(user =>
+//                                             <button key={user._id} class="w-full text-left py-2 rounded-lg hover:bg-gray-200 px-2 focus:outline-none focus-visible:bg-indigo-50">
+//                                                 <Link to='/joinRoom'>
+//                                                     <div class="flex items-center">
 
+//                                                         {
+//                                                             !user.updatedPhoto && !user.photo ? <img class="avatar  border w-8 h-8 mr-2 object-cover border-gray-300 rounded-full" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img' /> : <>
+//                                                                 {
+//                                                                     user.updatedPhoto ? <img class="avatar   border border-gray-300 w-8 h-8 mr-2 object-cover  rounded-full" src={user.updatedPhoto} alt="img" /> : <img class="avatar  border-gray-300 border w-8 h-8 mr-2 object-cover  rounded-full" src={user.photo} alt='img' />
+//                                                                 }</>
+//                                                         }
+//                                                         <div>
+//                                                             <h4 class="text-sm font-semibold text-gray-900">{user?.updatedName ? user?.updatedName : user?.name} {user.email === "sadikulsad0810@gmail.com" && <FaCheckCircle className='inline w-3 h-3 text-blue-700' />} </h4>
+//                                                             <div class="text-[13px]">Say hi now 👋</div>
+//                                                         </div>
+//                                                     </div>
+//                                                 </Link>
+//                                             </button>)
+//                                     }
+//                                     </> :
+
+//                                     <RightSideLoader/>
+//                                  }
+//                                 </div>
+//                             </div>
+//                         </div>
 //                     </div>
-//                     <div class="flex items-center justify-between mt-4">
-// 				<img src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"  class="bg-yellow-500 rounded-full w-10 h-10 object-cover border" alt='img'/>
-// 				<div class="flex items-center	justify-between	 bg-gray-50 h-11 w-11/12 border rounded-2xl	 overflow-hidden px-4 ">
-// 					<input type="text" class="h-50 w-50 bg-gray-50 outline-none " placeholder="Write your comment..." name="comment"/>
-//                         <button className=''> <FaLocationArrow className='w-5 h-5 animation rotate-45 '></FaLocationArrow></button>
-// 				</div>
-// 			</div>
-
-//                </div>
-//           </div>
-//      );
+//                 </div>
+//             </div>
+//         </div>
+//     );
 // };
 
-// export default TopPost;
+// export default RightSideNav;
+
+
+import React from 'react';
+
+const TopPost = () => {
+     return (
+          <div>
+               
+              
+          </div>
+     );
+};
+
+export default TopPost;

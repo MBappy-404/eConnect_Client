@@ -12,12 +12,12 @@ const firebaseConfig = {
   // messagingSenderId: process.env.REACT_APP_messagingSenderId,
   // appId:  process.env.REACT_APP_appId,
 
-  apiKey: "AIzaSyAH1oWaqYWb6cItUbad9blqWSTysP0ITN4",
-  authDomain: "esomaz.firebaseapp.com",
-  projectId: "esomaz",
-  storageBucket: "esomaz.appspot.com",
-  messagingSenderId: "780820586711",
-  appId: "1:780820586711:web:1e848cc90061e684bc9092"
+  apiKey: "AIzaSyD3RNBkrABh6Soq3DJlxVX2Rp-yssFIBss",
+  authDomain: "econnect-a64f7.firebaseapp.com",
+  projectId: "econnect-a64f7",
+  storageBucket: "econnect-a64f7.appspot.com",
+  messagingSenderId: "274633250458",
+  appId: "1:274633250458:web:82f1f6d4773669e03e7123"
 
 
 };

@@ -1,0 +1,23 @@
+
+.swiper {
+     width: 100%;
+     height: 100%;
+   }
+   
+   .swiper-slide {
+     
+     background: #fff;
+     display: flex;
+      
+    
+   }
+ 
+   @media only screen and (max-width:400px) {
+
+    .swiper-slide {
+      width: 110px !important;
+    }
+
+   }
+   
+   

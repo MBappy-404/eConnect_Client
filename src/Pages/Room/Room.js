@@ -1,145 +1,211 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AuthContext } from '../../AuthProvider/Auth';
 import './Room.css'
 import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import { io } from 'socket.io-client';
+import { FaArrowRight } from 'react-icons/fa';
+
+
 
 const Room = () => {
-   const { user } = useContext(AuthContext)
-   const [forms, setForms] = useState([])
-   const [count, setCount] = useState(0)
 
-   const handleChat = (event) => {
+   const { user } = useContext(AuthContext)
+   const [messages, setMessages] = useState([]);
+   const [inputValue, setInputValue] = useState('');
+   const endMessageFocus = useRef(null);
+
+
+   //   connect socket server 
+   const socket = io("https://chat-server-drtd.onrender.com")
+
+   const { data: users = [] } = useQuery({
+      queryKey: ['users'],
+      queryFn: async () => {
+         const res = await fetch('https://e-somaz-server.vercel.app/users');
+         const data = await res.json();
+         return data;
+      }
+   })
+
+   let updatedName = users.filter(users => { return users.email === user?.email }).map(eUser => eUser.updatedName)
+
+   // console.log(messages);
+
+   useEffect(() => {
+      // Listen for incoming messages
+      socket.on('message', (data) => {
+         setMessages((prevMessages) => [...prevMessages, data]);
+      });
+      // Clean up the event listener on unmount
+      return () => {
+         socket.off('message');
+      };
+   }, []);
+
+   const handleMessageSend = (event) => {
+
+      // get user name and photo 
+      let name = users?.filter(users => { return users?.email === user?.email }).map(eUser => eUser?.name)
+      let updatedName = users?.filter(users => { return users?.email === user?.email }).map(eUser => eUser?.updatedName)
+      let photo = users?.filter(users => { return users?.email === user?.email }).map(eUser => eUser?.updatedPhoto)
+      const senderName = updatedName[0] ? updatedName[0] : name[0];
+      const senderPhoto = photo ? photo[0] : user?.photoURL
+
       event.preventDefault()
 
-      const form = event.target;
-      const chat = form.message.value;
-      if (form.message.value === '') {
-         return toast.warning('Write something')
+      if (inputValue.trim() !== '') {
+         const message = {
+            text: inputValue,
+            user: senderName,
+            email: user?.email,
+            photo: senderPhoto
+         };
+         // send user message 
+         socket.emit('message', message);
+         setInputValue('');
       }
-      //  console.log(chat);
-      const data = { chat }
-      setCount(count + 1)
-      setForms([...forms, data])
-      form.reset()
+      else { toast.warning("Please write some word") }
+   };
 
-   }
+   // auto scrolling messages 
+   useEffect(() => {
+      endMessageFocus.current?.scrollIntoView({ behavior: 'smooth' });
+   }, [messages]);
 
 
    return (
       <div className='pt-16  md:pt-0 room px-1 '>
+
+         {/* network notice modal  */}
+         <input type="checkbox" id="my-modal" className="modal-toggle" />
+         <div className="modal">
+            <div className="modal-box  text-justify">
+               <h1 className='text-center font-bold text-xl mb-4 text-gray-600'>Network Notice</h1>
+
+               <p className='text-lg mb-5'>
+                  <FaArrowRight className='w-4 h-4 mr-1 inline ' /> If the message is not sent or received, please wait for a while. Basically it can be due to weak connection of your network or server connection. Thanks stay with us.
+               </p>
+               <p>
+                  <FaArrowRight className='w-4 h-4 mr-1 inline' /> যদি মেসেজ সেন্ড না হয় কিংবা রিসিভ না হয় তাহলে অনুগ্রহপূর্বক কিছুক্ষণ অপেক্ষা করুন। মূলত আপনার নেটওয়ার্কের দুর্বল কানেকশনের জন্য কিংবা সার্ভারের কানেকশনের জন্য এরকম হতে পারে। ধন্যবাদ আমাদের সাথেই থাকুন।
+               </p>
+               <div className="modal-action">
+                  <label htmlFor="my-modal" className="btn">Ok</label>
+               </div>
+            </div>
+         </div>
+
          {/* <!-- component --> */}
-         <div class="flex-1  sm:p-6 px-2  mt-5 md:mt-20 lg:mt-5 -mb-5 rounded-2xl  justify-between flex w-full  md:w-[750px] mx-auto bg-white lg:w-[500px] flex-col h-screen">
+         <div class="flex-1  sm:p-6 px-2  mt-5 md:mt-20 lg:mt-5 -mb-5 rounded-2xl  justify-between flex w-full  md:w-[750px] mx-auto bg-white lg:w-[500px] 2xl:w-[600px] flex-col h-screen">
             <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
                <div class="relative flex items-center space-x-4">
                   <div class="relative">
-                     <span class="absolute text-green-500 right-0 bottom-0">
-                        <svg className='w-4 h-4 md:w-26 md:h-26'>
-                           <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
-                        </svg>
-                     </span>
-                     {
-                        user?.photoURL ? <img class="inline-block h-10  w-10 md:w-16 md:h-16 rounded-full" src={user?.photoURL} alt='img' /> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' class="inline-block h-10 w-10 rounded-full" alt='img' />
-                     }
                   </div>
                   <div class="flex flex-col leading-tight">
                      <div class="text-sm md:text-xl  mt-1 flex items-center">
-                        <span class="text-gray-700 font-extrabold mr-3">{user?.displayName}</span>
+                        <span class="text-gray-500 font-extrabold mr-3">eConnect Room</span>
                      </div>
-                     <span class="text-sm md:text-lg text-gray-600"> User</span>
+                     <span class="text-sm md:text-md font-normal text-gray-600">{users?.length} users in eConnect </span>
                   </div>
                </div>
-               <div class="flex items-center space-x-2">
-                  <button type="button" class="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                     </svg>
-                  </button>
-                  <button type="button" class="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                     </svg>
-                  </button>
-                  <button type="button" class="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                     </svg>
-                  </button>
+               {/* icons */}
+               <div class="flex items-center mr-3">
+
+                  <label htmlFor="my-modal" className='cursor-pointer'>
+
+                     <span class="inline-block relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="animate-ping absolute top-1 right-0.5 block h-1 w-1 rounded-full ring-2 ring-blue-500 bg-green-600"></span>
+                     </span>
+
+                  </label>
                </div>
 
             </div>
             <div className='text-center font-semibold'>
                <p>Now start conversation</p>
             </div>
-            <div id="messages" class="flex flex-col space-y-4 p-3   scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter overflow-y-auto overflow-hidden scrollbar-w-2  ">
-               <div class="chat-message  " >
-                  <div class="flex items-end">
-                     <div class="flex flex-col space-y-2 transition-opacity  text-xs font-semibold max-w-xs mx-2 order-2 items-start">
+            <div id="chat-scroll" class="flex flex-col space-y-0 px-1 pb-3 chat-scroll  overflow-y-auto overflow-hidden  ">
+               <div class="flex items-end">
+                  <div class="flex flex-col space-y-2 mb-2 transition-opacity   text-xs font-semibold max-w-xs mx-2 order-2 items-start">
 
-                        <div>
-                           <span className='ml-3 -mb-2 text-gray-400 text-xs'>Bappy(CEO)</span>
-                           <span class="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-800">Hello "{user?.displayName}"..Welcome to Esomaz. </span>
-
-                        </div>
-
-                        <div>
-                           <span className='ml-3 -mb-2 text-gray-400 text-xs'>Bappy(CEO)</span>
-                           <span class="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-800"> Please wait for our next updates and stay with us🥰</span>
-                        </div>
-
+                     <div>
+                        <span className='ml-3  block  text-gray-400 text-xs'>Bappy(CEO)</span>
+                        <div class="px-4 max-w-[280px] py-2 text-sm rounded-lg rounded-bl-none inline-block bg-gray-300 text-gray-800">
+                           Hello "{updatedName ? updatedName : user?.displayName}"..Welcome to eConnect. </div>
                      </div>
-                     <img src="https://images-platform.99static.com/kMoKZjRdwOlG2ppB6u0eeqE0L-4=/783x767:1504x1488/500x500/top/smart/99designs-contests-attachments/121/121158/attachment_121158757" alt="My profile" class="w-6   h-6 rounded-full order-1" />
                   </div>
+                  <img src="https://images-platform.99static.com/kMoKZjRdwOlG2ppB6u0eeqE0L-4=/783x767:1504x1488/500x500/top/smart/99designs-contests-attachments/121/121158/attachment_121158757" alt="My profile" class="w-5 h-5 md:w-6 md:h-6 rounded-full order-1" />
                </div>
+               {
+                  messages?.map((message, i) =>
+                     <div class="chat-message" key={i + 1} >
 
-               <div class="chat-message">
-                  {
-                     forms?.map((message, i) => <div key={i + 1} class="flex items-end justify-end">
-                        <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 mb-2 order-1 items-end">
-                           <div>
-                              <span className='ml-3  block text-gray-400 text-xs'>You</span>
-                              <span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{message.chat}</span>
-                           </div>
-                        </div>
                         {
-                           user?.photoURL ? <img class="w-6 h-6 rounded-full order-2" src={user?.photoURL} alt='img' /> : <img src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" class="w-6 h-6 rounded-full order-2" />
+                           message.email !== user.email ?
+                              //   message receive
+                              <div class="flex items-end">
+                                 <div class="flex flex-col space-y-2    text-xs   mx-2 order-2 mb-2 items-start">
+                                    <span className=' -mb-2 ml-1 block text-gray-500 text-[11px]'>
+                                       {message?.email === "sadikulsad0810@gmail.com" ? <>CEO</> : <>{message.user}</>}</span>
+                                    <div>
+                                       <div class="px-4 break-all py-2 text-sm  max-w-[250px] rounded-lg rounded-bl-none block bg-gray-300 text-gray-800">{message?.text}</div>
+                                    </div>
+                                 </div>
+                                 {
+                                    message.photo ? <img src={message.photo} alt="My profile" class="w-5 h-5 md:w-6  border-gray-400 border  md:h-6 rounded-full order-1" /> : <img src="https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg" alt="My profile" class="w-5 h-5 md:w-6  border-gray-400 border  md:h-6 rounded-full order-1" />
+                                 }
+                              </div> :
+
+                              // message send 
+                              <div class="chat-message">
+                                 <div class="flex items-end justify-end">
+                                    <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 mb-2 order-1 items-end">
+                                       <span className='-mb-2 mr-2 block text-gray-500 text-[11px]'>You</span>
+                                       <div>
+                                          <div class="px-4 break-all py-2 text-sm max-w-[250px]  block rounded-lg  rounded-br-none bg-blue-600 text-white ">{message?.text}</div>
+                                       </div>
+                                    </div>
+                                    {
+                                       message.photo ? <img src={message.photo} alt="My profile" class="w-5 h-5 md:w-6  border-gray-400 border  md:h-6 rounded-full order-1" /> : <img src="https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg" alt="My profile" class="w-4 h-4 md:w-5  border-gray-400 border  md:h-5 rounded-full order-1" />
+                                    }
+
+                                 </div>
+
+                              </div>
                         }
-                     </div>)
-                  }
-               </div>
-
-
-
+                        <div ref={endMessageFocus} />
+                     </div >
+                  )
+               }
 
             </div>
-            <form onSubmit={handleChat}>
-               <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-                  <div class="relative flex">
+            <form onSubmit={handleMessageSend}>
+               <div class="pt-4 pb-4 md:pb-0">
 
-                     <span class="absolute inset-y-0 flex items-center">
-                        <button type="button" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                           </svg>
-                        </button>
-                     </span>
-                     <input type="text" name='message' placeholder="Write your message!" class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3" />
-                     <div class="absolute right-0 items-center inset-y-0 ">
-                        <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-700 focus:outline-none">
-                           <span class="font-bold">Send</span>
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 ml-2 transform rotate-90">
-                              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                           </svg>
-                        </button>
-                     </div>
-
+                  <div class="flex items-center bg-gray-200  rounded-lg py-1">
+                     <textarea
+                        spellCheck={false}
+                        value={inputValue}
+                        name="message"
+                        onChange={(e) => setInputValue(e.target.value)}
+                        autoFocus
+                        placeholder="Write your message!"
+                        class="appearance-none bg-transparent border-none  w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" ></textarea>
+                     <button
+                        type='submit'
+                        class="flex-shrink-0 flex bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-2 px-2 rounded">
+                        <span class="font-semibold">Send</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 md:h-6 md:w-6 ml-1 transform rotate-90">
+                           <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                        </svg>
+                     </button>
                   </div>
                </div>
             </form>
          </div>
-
-
-
-
       </div>
    );
 };

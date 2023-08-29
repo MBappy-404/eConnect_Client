@@ -1,37 +1,30 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+
+import { Link, Outlet } from 'react-router-dom';
 import Header from '../Pages/Header/Header';
-import { Link, NavLink, } from 'react-router-dom';
-import { FaBell, FaBitcoin, FaDoorOpen, FaFacebookMessenger, FaUserCircle } from 'react-icons/fa';
+import { NavLink, } from 'react-router-dom';
+import { FaBell, FaBitcoin, FaFacebookMessenger } from 'react-icons/fa';
 import '../App.css'
 import { FaUserFriends } from "react-icons/fa";
-import { useContext } from 'react';
-import { AuthContext } from '../AuthProvider/Auth';
+import LeftSideNav from '../Pages/LeftSideNav/LeftSideNav';
+import RightSideNav from '../Pages/RightSideNav/RightSideNav';
 import { useQuery } from '@tanstack/react-query';
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
+import '../Pages/LeftSideNav/LeftSideNav.css'
 
 const Main = () => {
 
-    const { user, logOut } = useContext(AuthContext)
-    const handleLogOut = () => {
-        logOut()
-            .then()
-            .catch()
 
-    }
-
-    const { data: users = [] } = useQuery({
-        queryKey: ['users'],
+    const { data: post = [] } = useQuery({
+        queryKey: ['post'],
         queryFn: async () => {
-            //   setLoading(true)
-            const res = await fetch('https://e-somaz-server.vercel.app/users');
+            const res = await fetch('https://e-somaz-server.vercel.app/post');
             const data = await res.json();
             return data;
 
         }
     })
 
-
-
+    let notification = post?.length
 
 
     const nav_items = [
@@ -59,99 +52,60 @@ const Main = () => {
         {
             path: '/earn',
             nav_item: 'earn',
-            icon: <FaBitcoin className='w-7 h-7' ></FaBitcoin>,
+            icon: <FaBitcoin className='w-7 h-7 -rotate-12' ></FaBitcoin>,
         },
         {
 
             path: '/notification',
             nav_item: 'notification',
-            icon: <FaBell className='w-7 h-7' />,
+            icon: <div className="inline-flex">
+                <Link to="/notification"  >
+                    <div className="indicator inline">
+                        <span className="indicator-item text-white break-all border border-white text-center  text-[9px] translate-x-1 w-6 p-1 rounded-full  bg-red-500">
+                            {
+                                notification > 99 ? <span>99+</span> : notification
+                            }
+                        </span>
+                        <FaBell className="w-7 h-7 inline " />
+                    </div>
+                </Link>
+            </div>,
         }
     ]
 
 
     return (
         <div>
-
+            <ScrollToTop />
+            {/* top nav  */}
             <Header></Header>
 
-            {/* left side nav for  medium and large device  */}
-            <div className='mt-16'>
-                <div class="flex">
-                    <div class="w-[250px] lg:w-[300px] border-r bg-white hidden lg:block">
-                        <div class="py-2  space-y-3 fixed top-0">
-                            <div class="hidden  mt-20 md:hidden lg:block  ">
-                                <div className=' h-full     mx-auto     w-[100%]  '>
-                                    <div class="mt-5 px-8 text-center">
-                                        {user && user.photoURL ? <> <img src={user?.photoURL} alt="" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" /></> : <><img class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img' /></>}
-                                        <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-                                            {user ? <>{user?.displayName}</> : <>Anonymous</>}
-                                        </h5>
-
-                                    </div>
-
-                                    <div >
-                                        <ul class="px-8  mt-4">
-                                            <li>
-                                                <Link to='/profile'><a href=" " aria-label="dashboard" class="relative  px-4 py-3 flex items-center space-x-4 rounded-xl text-gray-600 hover:bg-gray-300 to-cyan-400">
-                                                    <FaUserCircle className='text-gray-400 w-5 h-5' ></FaUserCircle >
-                                                    <span class="-mr-1 font-medium">Profile</span>
-                                                </a></Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/saved' class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
-                                                        <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
-                                                    </svg>
-                                                    <span class="group-hover:text-gray-700 font-medium">Saved</span>
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/report'><a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
-                                                        <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
-                                                    </svg>
-                                                    <span class="group-hover:text-gray-700 font-medium">Reports</span>
-                                                </a></Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/people'> <a href=" " class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                                    <FaUserFriends className='w-5 h-5' ></FaUserFriends>
-                                                    <span class="group-hover:text-gray-700 font-medium">People</span>
-                                                </a></Link>
-                                            </li>
-                                            <li>
-                                                <a class="px-4 hover:bg-gray-300 to-cyan-400 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                                                    <button class="  flex items-center space-x-4 rounded-md text-gray-600 group">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                                        </svg>
-                                                        <span onClick={handleLogOut} class="group-hover:text-gray-700 font-medium">Logout</span>
-                                                    </button>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+            <div className='mt-16 main-layout'>
+                <div class="flex justify-center">
+                    {/* left side nav for  medium and large device  */}
+                    <div class="w-60 left-side-nav hidden lg:block">
+                        <div className='flex justify-end'>
+                            <div class=" fixed top-0">
+                                <div class="hidden  mt-[85px] md:hidden lg:block  ">
+                                    <LeftSideNav />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full  lg:w-6/12 h-full border-r pb-5">
+                    {/* navbar for small device  */}
+                    <div class="w-full middle-content lg:w-[43%] h-full  pb-5">
                         <div className='flex justify-center'>
                             <div class="flex py-4 px-4 mb-2 fixed rounded-b-xl shadow-lg w-full  md:w-[750px]  z-20 top-16 gap-0  md:flex lg:hidden  border-b bg-white items-center justify-between">
                                 {nav_items.map((e, i) => (
                                     <NavLink
                                         key={i}
                                         to={e.path}
-                                        activeStyle={{ color: "red" }}
-                                        className={({ isActive }) => isActive ? 'text-blue-600 ' : ''}>
+                                        // activeStyle={{ color: "blue" }}
+                                        className={({ isActive }) => isActive ? 'text-blue-600 transition-colors' : 'text-gray-500 transition-colors'}>
                                         <span  >{e.icon}</span>
                                     </NavLink>
                                 ))}
-
                             </div>
                         </div>
 
@@ -159,64 +113,9 @@ const Main = () => {
                         <Outlet></Outlet>
 
                     </div>
-                    {/* right side layout  */}
-                    <div class=" py-4 mx-auto bg-white  hidden lg:block">
-                        <div class="sticky top-3 px-2 rounded-2xl ">
-                            <section class="flex flex-col    justify-center    text-gray-600 ">
-                                <div class=" ">
-                                    <div class="relative max-w-[340px] mx-auto bg-white    rounded-lg">
 
-                                        <div class=" pb-4 px-5 border-b border-gray-200">
-                                            <div class="flex justify-between items-center mb-3">
-
-                                                <div class="flex items-center">
-
-                                                    <div class="pr-1">
-                                                        <a class="inline-flex text-gray-800 hover:text-gray-900" href="#0">
-                                                            <h2 class="text-xl leading-snug font-bold">Messages</h2>
-                                                        </a>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="relative inline-flex items-center flex-shrink-0">
-                                                    <button class="text-gray-400 hover:text-gray-500 rounded-full focus:ring-0 outline-none focus:outline-none">
-                                                        <span class="sr-only">Settings</span>
-                                                        <svg class="w-4 h-4 mt-1 fill-current" viewBox="0 0 16 16">
-                                                            <path d="m15.621 7.015-1.8-.451A5.992 5.992 0 0 0 13.13 4.9l.956-1.593a.5.5 0 0 0-.075-.611l-.711-.707a.5.5 0 0 0-.611-.075L11.1 2.87a5.99 5.99 0 0 0-1.664-.69L8.985.379A.5.5 0 0 0 8.5 0h-1a.5.5 0 0 0-.485.379l-.451 1.8A5.992 5.992 0 0 0 4.9 2.87l-1.593-.956a.5.5 0 0 0-.611.075l-.707.711a.5.5 0 0 0-.075.611L2.87 4.9a5.99 5.99 0 0 0-.69 1.664l-1.8.451A.5.5 0 0 0 0 7.5v1a.5.5 0 0 0 .379.485l1.8.451c.145.586.378 1.147.691 1.664l-.956 1.593a.5.5 0 0 0 .075.611l.707.707a.5.5 0 0 0 .611.075L4.9 13.13a5.99 5.99 0 0 0 1.664.69l.451 1.8A.5.5 0 0 0 7.5 16h1a.5.5 0 0 0 .485-.379l.451-1.8a5.99 5.99 0 0 0 1.664-.69l1.593.956a.5.5 0 0 0 .611-.075l.707-.707a.5.5 0 0 0 .075-.611L13.13 11.1a5.99 5.99 0 0 0 .69-1.664l1.8-.451A.5.5 0 0 0 16 8.5v-1a.5.5 0 0 0-.379-.485ZM8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="py-3 px-5">
-                                            <h3 class="text-xs font-semibold uppercase text-gray-400 mb-1">Chats</h3>
-                                            <div class="divide-y  divide-gray-200">
-
-                                                {/* right side layout  */}
-                                                {
-                                                    users.slice(0,8).map(user =>
-                                                        <button key={user._id} class="w-full text-left py-2 hover:bg-gray-100 px-2 focus:outline-none focus-visible:bg-indigo-50">
-                                                            <Link to='/joinRoom'>
-                                                                <div class="flex items-center">
-                                                                    {/* <img class="rounded-full items-start flex-shrink-0 mr-3" src={user.photo} width="32" height="32" alt="img" /> */}
-
-                                                                    {user.photo ? <> <img class="avatar w-8 h-8 mr-2 rounded-full" src={user.photo} alt="user" /></> : <><img class="avatar w-8 h-8 md:w-8 md:h-8  mr-2 rounded-full" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img' /></>}
-                                                                    <div>
-                                                                        <h4 class="text-sm font-semibold text-gray-900">{user.name}</h4>
-                                                                        <div class="text-[13px]">Say hi now 👋</div>
-                                                                    </div>
-                                                                </div>
-                                                            </Link>
-                                                        </button>)
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
+                    {/* right side content  */}
+                    <RightSideNav></RightSideNav>
                 </div>
             </div>
         </div>

@@ -1,0 +1,29 @@
+@media (max-width: 1200px) and (min-width: 1024px) {
+     .main-layout{
+          padding-right: 50px;
+     }
+      
+     .left-side-nav{
+          width: 200px;
+     }
+      .left-side-icon{
+          display: none;
+      }
+      .left-side-userName{
+          display: none;
+      }
+      .left-side-nav-top{
+          width: 90px;
+      }
+      .left-side-menu{
+          width: 90px;
+      }
+      .middle-content{
+          width: 65%;
+      }
+ }
+ 
+ 
+ 
+ 
+ 

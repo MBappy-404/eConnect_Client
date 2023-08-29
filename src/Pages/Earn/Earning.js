@@ -2,15 +2,16 @@ import React from 'react';
 
 const Earning = () => {
      return (
-          <div>
-               <div class="bg-white py-2 -mb-5 mt-14 md:mt-0">
-                    <div class="w-full">
+          <div className='py-5  px-2'>
+               <div class="bg-white md:w-[750px] rounded-xl 2xl:w-[600px] lg:w-[500px] mx-auto py-2 -mb-5 mt-14 lg:mt-0 ">
+                    <div class="w-full ">
                          <div class="border-b">
-                              <div class="my-4 px-6">
-                                   <h2 class="font-semibold text-2xl">My Wallet</h2>
+                              <div class="my-4 px-4">
+                                   {/* <h2 class="font-semibold text-2xl">My Wallet</h2> */}
+                                   <span class="font-bold text-xl text-slate-600 mb-3">My Wallet</span>
                               </div>
                          </div>
-                         <div class="px-8 py-2">
+                         <div class="px-4 py-2">
                               <h4 class="text-lg text-gray-500 font-thin">Your Balance</h4>
                               <h4 class="text-2xl font-semibold">$00.00</h4>
                          </div>
@@ -24,7 +25,7 @@ const Earning = () => {
                                    <h1 class="text-2xl text-red-100 font-semibold">$00.00</h1>
                               </div>
                          </div>
-                         <div class="px-8 my-6">
+                         <div class="px-4 my-6">
                               <div class="my-4 border-b w-full">
                                    <h2 class="font-semibold text-lg">Earning Category</h2>
                               </div>
@@ -41,10 +42,15 @@ const Earning = () => {
                                         {/* modal body  */}
                                         <div className="modal" id="my-modal-0">
                                              <div className="modal-box">
-                                                  <h3 className="font-bold text-lg">View Ads</h3>
-                                                  <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+                                                  <div class="flex flex-col px-2 md:px-3     bg-center bg-cover bg-no-repeat ">
+                                                       <div
+                                                            class="grid   w-full  place-items-center   mx-auto  sm:my-auto  space-y-5 text-center cursor-pointer">
+                                                            <img src="https://cdn.dribbble.com/users/2344801/screenshots/4774578/alphatestersanimation2.gif" alt="" />
+                                                            <h1 class="text-xl font-bold uppercase text-indigo-600 transition duration-500">Available Soon</h1>
+                                                       </div>
+                                                  </div>
                                                   <div className="modal-action">
-                                                       <a href="#" className="btn">Yay!</a>
+                                                       <a href="#" className="btn btn-primary">OK</a>
                                                   </div>
                                              </div>
                                         </div>
@@ -63,10 +69,15 @@ const Earning = () => {
                                         <p><a href="#my-modal-1" className="btn btn-sm bg-green-600 border-none -mb-2">Start</a></p>
                                         <div className="modal" id="my-modal-1">
                                              <div className="modal-box">
-                                                  <h3 className="font-bold text-lg">Quiz</h3>
-                                                  <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+                                                  <div class="flex flex-col px-2 md:px-3     bg-center bg-cover bg-no-repeat ">
+                                                       <div
+                                                            class="grid   w-full  place-items-center   mx-auto  sm:my-auto  space-y-5 text-center cursor-pointer">
+                                                            <img src="https://cdn.dribbble.com/users/2344801/screenshots/4774578/alphatestersanimation2.gif" alt="" />
+                                                            <h1 class="text-xl font-bold uppercase text-indigo-600 transition duration-500">Available Soon</h1>
+                                                       </div>
+                                                  </div>
                                                   <div className="modal-action">
-                                                       <a href="#" className="btn">Yay!</a>
+                                                       <a href="#" className="btn btn-primary">Ok</a>
                                                   </div>
                                              </div>
                                         </div>
@@ -75,7 +86,7 @@ const Earning = () => {
                               <div class="ml-3 relative bg-white p-4 border-l-8 border-blue-500 shadow-md my-4 flex justify-between ">
 
                                    <div>
-                                        <p>Blog</p>
+                                        <p>Article</p>
                                    </div>
                                    <div>
                                         <p>$00</p>
@@ -84,38 +95,43 @@ const Earning = () => {
                                         <p><a href="#my-modal-3" className="btn btn-sm bg-green-600 border-none -mb-2">Start</a></p>
                                         <div className="modal" id="my-modal-3">
                                              <div className="modal-box">
-                                                  <h3 className="font-bold text-lg">Read Article</h3>
-                                                  <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+                                                  <div class="flex flex-col px-2 md:px-3     bg-center bg-cover bg-no-repeat ">
+                                                       <div
+                                                            class="grid   w-full  place-items-center   mx-auto  sm:my-auto  space-y-5 text-center cursor-pointer">
+                                                            <img src="https://cdn.dribbble.com/users/2344801/screenshots/4774578/alphatestersanimation2.gif" alt="" />
+                                                            <h1 class="text-xl font-bold uppercase text-indigo-600 transition duration-500">Available Soon</h1>
+                                                       </div>
+                                                  </div>
                                                   <div className="modal-action">
-                                                       <a href="#" className="btn">Yay!</a>
+                                                       <a href="#" className="btn btn-primary">Ok</a>
                                                   </div>
                                              </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
-                         <div class="px-8 my-6">
+                         <div class="px-4 my-6">
                               <div class="my-4 border-b w-full">
                                    <h2 class="font-semibold text-lg">Transaction</h2>
                               </div>
                               <div class="bg-white p-4 border-2 rounded-md">
                                    <div class="mt-4">
-                                   <div class="my-5 text-sm">
+                                        <div class="my-5 text-sm">
                                              <label htmlFor="amount" class="block text-black">
                                                   Account
                                              </label>
-                                             <select name="" id="" className='rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full'> 
+                                             <select name="" id="" className='rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full'>
                                                   <option value="">PayPal</option>
                                                   <option value="">Bkash</option>
                                              </select>
                                         </div>
                                         <div class="my-5 text-sm">
                                              <label htmlFor="text" class="block text-black">Amount</label>
-                                             <input type="text" autoFocus
+                                             <input type="text"
                                                   class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                                                   placeholder="Enter Amount" />
                                         </div>
-                                       
+
                                         <div class="my-5">
                                              <button class="rounded-sm block text-center text-white bg-blue-600 p-3 duration-300  hover:bg-blue-800 w-full">
                                                   Add Transaction

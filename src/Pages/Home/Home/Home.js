@@ -2,14 +2,11 @@
 
 import React from 'react';
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../AuthProvider/Auth';
 import { useQuery } from '@tanstack/react-query';
 import ShowPost from '../../Media/ShowPost';
-import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { RotatingLines } from 'react-loader-spinner';
 import Story from '../../Story/Story';
 
 
@@ -17,12 +14,12 @@ import Story from '../../Story/Story';
 
 const Home = () => {
     const { user } = useContext(AuthContext);
-    const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
     const [loading, setLoading] = useState()
     const [loading2, setLoading2] = useState()
 
 
+    // posts 
     const { data: post = [], refetch } = useQuery({
         queryKey: ['post'],
         queryFn: async () => {
@@ -33,6 +30,18 @@ const Home = () => {
             return data;
 
 
+        }
+    })
+
+    // users 
+    const { data: users = [] } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            setLoading(true)
+            const res = await fetch('https://e-somaz-server.vercel.app/users');
+            const data = await res.json();
+            setLoading(false)
+            return data;
         }
     })
 
@@ -133,22 +142,31 @@ const Home = () => {
     return (
         <div className='mt-14 lg:mt-0'>
             {/* <!-- post Content --> */}
-            <div class="w-full h-full border-r pb-5">
+            <div class="w-full h-full pb-5">
                 {/* story  */}
-               <Story></Story>
+                <Story></Story>
 
                 {/* create Post  */}
                 <div className='  flex justify-center px-2'>
-                    <div className=' bg-white w-full md:w-[750px] lg:w-[500px] mt-5 md:mx-0  rounded-xl m-auto'>
+                    <div className=' bg-white w-full md:w-[750px] lg:w-[500px] 2xl:w-[600px] 2xl:w-[600px] mt-5 md:mx-0  rounded-xl m-auto'>
                         <form  >
                             <div class="flex">
-                                <div class="m-2  py-1">
+                                <Link to='/profile' class="m-2  py-1">
+
                                     {
-                                        user?.photoURL ? <img class="inline-block h-10 w-10 rounded-full" src={user?.photoURL} alt='img' /> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' class="inline-block h-10 w-10 rounded-full" alt='img' />
+                                        users.filter(users => { return users.email === user?.email }).map(eUser => <>
+                                            {
+                                                !eUser.updatedPhoto && !eUser.photo ? <img class="inline-block h-10 w-10 rounded-full" src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt='img' /> : <>
+                                                    {
+                                                        eUser.updatedPhoto ? <img class="inline-block h-10 object-cover w-10 rounded-full" src={eUser.updatedPhoto} alt="img" /> : <img class="inline-block h-10 object-cover w-10 rounded-full" src={eUser.photo} alt='img' />
+                                                    }</>
+                                            }
+                                        </>)
                                     }
-                                </div>
+
+                                </Link>
                                 <div class="flex-1 pr-5 pt-2 mt-2">
-                                   <Link to='/createPost'> <input class=" hover:bg-gray-200 cursor-pointer  bg-transparent text-gray-700 border  text-md focus:outline-none pl-3 w-full h-10 rounded-full" readOnly placeholder="Write something?"/></Link>
+                                    <Link to='/createPost'> <input class=" hover:bg-gray-200 cursor-pointer  bg-transparent text-gray-700 border  text-md focus:outline-none pl-3 w-full h-10 rounded-full" readOnly placeholder="Write something?" /></Link>
                                 </div>
                             </div>
                             <div class="flex justify-start">
@@ -157,12 +175,12 @@ const Home = () => {
                                         <div class=" text-center px-1 py-1 m-2">
                                             <Link to='/createPost'><span class="mt-1 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full  hover:text-blue-400">
                                                 <label htmlFor="icon-button-file">
-                                                    <svg class="text-center cursor-pointer h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <svg class="text-center cursor-pointer hover:text-blue-500 h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                 </label>Photos
                                             </span></Link>
                                         </div>
                                         <div>
-                                           <Link to='/createPost'> <button type='submit' className="bg-blue-400 cursor-pointer hover:bg-blue-600 text-white font-bold py-1 md:py-2 mt-1 px-5 md:px-8 mr-5 md:mr-0 rounded-full">Create Post</button></Link>
+                                            <Link to='/createPost'> <button type='submit' className="bg-blue-400 cursor-pointer hover:bg-blue-600 text-white font-bold py-1 md:py-2 mt-1 px-5 md:px-8 mr-5 md:mr-0 rounded-full">Create Post</button></Link>
                                         </div>
                                     </div>
                                 </div>
@@ -173,52 +191,52 @@ const Home = () => {
                 {/* show home page posts  */}
                 <main class="h-full w-full px-2">
                     <div>
-                        <h1 className='text-blue-500    text-center text-xl mt-5 font-bold'>Popular Posts</h1>
+                        <h1 className='text-blue-600    text-center text-xl mt-5 font-bold'>Popular Posts</h1>
 
                     </div>
                     {/* spinner when load data    */}
 
-                    {loading2 ? <div className='flex justify-center items-center flex-col'>
+                    {loading2 ? <div className='flex justify-center mt-2 items-center flex-col'>
                         {/* spinner 1 */}
-                        <div className="py-4 rounded-2xl mt-4 shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] animate-pulse ">
-                            <div className="flex p-4 space-x-4 sm:px-8">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gray-700"></div>
+                        <div className="py-2 rounded-2xl mt-3  shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] 2xl:w-[600px] animate-pulse ">
+                            <div className="flex p-2 space-x-4 sm:px-2">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700"></div>
                                 <div className="flex-1 py-2 space-y-4">
                                     <div className="w-2/4 h-2 rounded bg-gray-700"></div>
                                     <div className="w-1/3 h-2 rounded bg-gray-700"></div>
                                 </div>
                             </div>
-                            <div className="p-4 space-y-4 sm:px-8">
+                            <div className="p-2 space-y-4 sm:px-2">
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
                                 <div className="w-full h-72 rounded bg-gray-700"></div>
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
                             </div>
                         </div>
                         {/* spinner 2 */}
-                        <div className="py-4 rounded-2xl mt-4 shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] animate-pulse ">
-                            <div className="flex p-4 space-x-4 sm:px-8">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gray-700"></div>
+                        <div className="py-2 rounded-2xl mt-3  shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] 2xl:w-[600px] animate-pulse ">
+                            <div className="flex p-2 space-x-4 sm:px-2">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700"></div>
                                 <div className="flex-1 py-2 space-y-4">
                                     <div className="w-2/4 h-2 rounded bg-gray-700"></div>
                                     <div className="w-1/3 h-2 rounded bg-gray-700"></div>
                                 </div>
                             </div>
-                            <div className="p-4 space-y-4 sm:px-8">
+                            <div className="p-2 space-y-4 sm:px-2">
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
                                 <div className="w-full h-72 rounded bg-gray-700"></div>
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
                             </div>
                         </div>
                         {/* spinner 3 */}
-                        <div className="py-4 rounded-2xl mt-4 shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] animate-pulse ">
-                            <div className="flex p-4 space-x-4 sm:px-8">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gray-700"></div>
+                        <div className="py-2 rounded-2xl mt-3  shadow-md  w-full bg-white  md:w-[750px] lg:w-[500px] 2xl:w-[600px] animate-pulse ">
+                            <div className="flex p-2 space-x-4 sm:px-2">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700"></div>
                                 <div className="flex-1 py-2 space-y-4">
                                     <div className="w-2/4 h-2 rounded bg-gray-700"></div>
                                     <div className="w-1/3 h-2 rounded bg-gray-700"></div>
                                 </div>
                             </div>
-                            <div className="p-4 space-y-4 sm:px-8">
+                            <div className="p-2 space-y-4 sm:px-2">
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
                                 <div className="w-full h-72 rounded bg-gray-700"></div>
                                 <div className="w-full h-2 rounded bg-gray-700"></div>
@@ -240,10 +258,6 @@ const Home = () => {
                 </main>
             </div>
         </div>
-
-
-
-
 
     );
 };

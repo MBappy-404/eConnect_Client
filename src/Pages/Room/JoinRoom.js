@@ -8,9 +8,7 @@ const JoinRoom = () => {
      const navigate = useNavigate()
      let captcha;
      let alphabets = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-     console.log(alphabets.length);
-     let status = document.getElementById('status');
-     // status.innerText = "Captcha Generator";
+     // console.log(alphabets.length);
 
      const generate = () => {
           // console.log(status)
@@ -22,17 +20,17 @@ const JoinRoom = () => {
           let fifth = alphabets[Math.floor(Math.random() * alphabets.length)];
           let sixth = Math.floor(Math.random() * 10);
           captcha = first.toString() + second.toString() + third.toString() + fourth.toString() + fifth.toString() + sixth.toString();
-          console.log(captcha);
+          // console.log(captcha);
           document.getElementById('generated-captcha').value = captcha;
-          status.innerText = "Captcha Generator"
+          
      }
 
      const handleCheck = () => {
           // console.log(status)
           let userValue = document.getElementById("entered-captcha").value;
           if (userValue === '') { return toast.warning('Please fill input') }
-          console.log(captcha);
-          console.log(userValue);
+          // console.log(captcha);
+          // console.log(userValue);
           if (userValue === captcha) {
                // status.innerText = "Correct!!"
                document.getElementById('zoom-in').classList.add('zoom-in')
@@ -49,20 +47,17 @@ const JoinRoom = () => {
 
                setInterval(incrementCounter, 1000);
           } else {
-               // status.innerText = "Try Again!!"
-               toast.warning('Try Again!!')
+                
+               toast.warning('Invalid Captcha!!')
                document.getElementById("entered-captcha").value = '';
           }
      }
 
-
-
      return (
-          <div onMouseEnter={generate} className='flex justify-center'>
-
-               <div id='zoom-in'  className='top w-full overflow-hidden py-44 -mb-5  md:w-[750px] mx-auto  lg:w-[500px]' >
+          <div onMouseEnter={generate} className='flex mt-20 mb-5 md:mt-14 lg:mt-0 md:mb-0 md:py-5 px-2  justify-center'>
+               <div id='zoom-in'  className='top w-full overflow-hidden py-44 2xl:mb-20 2xl:w-[600px] rounded-xl -mb-5  md:w-[750px] mx-auto  lg:w-[500px]' >
                     <div class="wrapper"></div>
-                    <h1 className='text-2xl font-extrabold mb-10'>I'm Not Robot</h1>
+                    <h1 className='text-2xl text-gray-500 font-extrabold mb-10'>Verify I'm Not Robot</h1>
                     <h2 id="status" style={{ color: "#ee7e6a" }}> </h2>
                     <div>
                          <input type="text" className='cursor-not-allowed' readOnly id="generated-captcha" />
@@ -71,14 +66,12 @@ const JoinRoom = () => {
                          <input type="text" id="entered-captcha" className='mt-2' placeholder="Enter the captcha.." />
                     </div>
                     <button className='check   mt-2' id='join' type="button" onClick={handleCheck}>
-                         Join Room
+                         Join Chat Room 
                     </button>
-                    <button type="button" className='check  animate-pulse' onClick={generate} id="gen">
-                         Generate New Captcha
+                    <button type="button" className='check text-black bg-blue-500  animate-pulse' onClick={generate} id="gen">
+                         Change Captcha
                     </button>
-
                </div>
-
           </div>
      );
 };

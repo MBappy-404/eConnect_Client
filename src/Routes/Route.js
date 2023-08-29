@@ -6,8 +6,6 @@ import Media from "../Pages/Media/Media";
 import Profile from "../Pages/Profile/Profile";
 import SignIn from "../Pages/Sign Up & Sign In/SignIn";
 import SignUp from "../Pages/Sign Up & Sign In/SignUp";
-import Watch from "../Pages/Watch/Watch";
-import ChatBox from "../Pages/ChatBox/ChatBox"
 import People from "../Pages/People/People";
 import Saved from "../Pages/Saved/Saved";
 import Report from "../Pages/Report/Report";
@@ -20,21 +18,26 @@ import Story from "../Pages/Story/Story";
 import CreateStory from "../Pages/Story/CreateStory";
 import Room from "../Pages/Room/Room";
 import JoinRoom from "../Pages/Room/JoinRoom";
+import ViewProfile from "../Pages/View Profile/ViewProfile";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import StoryDetails from "../Pages/Story/StoryDetails";
+import TopPost from "../Pages/Home/TopPost/TopPost";
+import Others from "../Pages/Others/Others";
  
-
 const router = createBrowserRouter([
+ 
      {
           path:'/',
-          element: <Main></Main>,
+          element: <PrivateRoute> <Main></Main></PrivateRoute>,
+          errorElement:<ErrorPage></ErrorPage>,
           children:[
               
                {
-                    path:'/',
+                    path:'',
                     element: <Home></Home>
                },
-              
                {
-                    path: '/home',
+                    path:'/home',
                     element: <Home></Home>
                },
                {
@@ -44,11 +47,14 @@ const router = createBrowserRouter([
                {
                     path: '/postDetails/:id',
                     element: <PostDetails></PostDetails>,
-                    loader:  ({params}) => fetch(`https://e-somaz-server.vercel.app/postDetails/${params.id}`),
                },
                {
                     path: '/about',
                     element: <About></About>
+               },
+               {
+                    path: '/test',
+                    element: <TopPost/>
                },
               
                {
@@ -56,16 +62,18 @@ const router = createBrowserRouter([
                     element: <PrivateRoute> <Profile></Profile></PrivateRoute>
                },
                {
-                    path:'/watch',
-                    element: <Watch></Watch>
-               },
-               {
-                    path:'/chat',
-                    element: <ChatBox></ChatBox>
+                    path:'/user/:id',
+                    element:<ViewProfile></ViewProfile>,
+                    loader:  ({params}) => fetch(`https://e-somaz-server.vercel.app/user/${params.id}`),
+
                },
                {
                     path:'/people',
                     element: <People></People>
+               },
+               {
+                    path:'/others',
+                    element:  <Others></Others>
                },
                {
                     path: '/saved',
@@ -80,10 +88,6 @@ const router = createBrowserRouter([
                     element: <PrivateRoute><Notification></Notification></PrivateRoute>
                },
                {
-                    path: '/chat',
-                    element: <ChatBox></ChatBox>
-               },
-               {
                     path: '/createPost',
                     element: <CreatePost></CreatePost>
 
@@ -93,8 +97,13 @@ const router = createBrowserRouter([
                     element: <Story></Story>
                },
                {
+                    path:'/storyDetails',
+                    element:<StoryDetails></StoryDetails>
+
+               },
+               {
                     path: '/createStory',
-                    element: <CreateStory></CreateStory>
+                    element: <PrivateRoute><CreateStory></CreateStory></PrivateRoute>
                },
                {
                     path:'/joinRoom',
