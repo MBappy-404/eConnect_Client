@@ -6,7 +6,7 @@ const ShowReport = ({ report }) => {
   const { image, post, _id, postUser, time, postUserPhoto, Reports } = report;
   return (
     <div>
-      <div className='px-2'>
+      <div className=''>
         <div className="border md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto rounded-2xl p-2">
           <div className="flex items-center justify-between">
             <div className="gap-2 flex items-center">
@@ -47,12 +47,12 @@ const ShowReport = ({ report }) => {
                         <div key={i + 1} className='bg-gray-100 p-3 mt-1 rounded-lg'>
                           <div className="flex items-center mb-2">
                             <div>
-                              <h2 className="text-lg font-bold">Posted by: {postUser}</h2>
+                              <h2 className="text-lg  ">Posted by: {postUser}</h2>
                               <p className="text-gray-600">Reported by: {report.reporterName}</p>
                             </div>
                           </div>
                           <div className="mb-2">
-                            <h3 className="text-lg font-bold">Reason for Report:</h3>
+                            <h3 className="text-lg font-semibold">Reason for Report:</h3>
                             <p className="text-gray-700">{report.selectReport}</p>
                           </div>
                         </div>

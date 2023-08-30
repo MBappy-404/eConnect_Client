@@ -12,7 +12,6 @@ import { Comment, RotatingLines } from 'react-loader-spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import '../../App.css'
  
 
 
@@ -386,11 +385,11 @@ const ShowPost = ({publicPost,refetch,setLoading2}) => {
                               post?.length > 300 ? <>{post.slice(0,300)} <Link to={`/postDetails/${_id}`} className='font-semibold cursor-pointer hover:text-blue-500'>...see more</Link></> : post
                          }
                     </div>
-                    <div className="mt-3 flex  justify-center border-b  border-t flex-wrap -mx-2">
+                    <div className="mt-3 flex  justify-center border-b  flex-wrap -mx-2">
                         {
                          image? <><PhotoProvider>
                                     <PhotoView src={image}>
-                                         <img src={image} className=' social-media-image max-h-96 object-cover w-full ' alt="img"  />
+                                         <img src={image} className='  border-t max-h-96 object-cover w-full ' alt="img"  />
                                     </PhotoView>
                               </PhotoProvider></> : ''
                         }

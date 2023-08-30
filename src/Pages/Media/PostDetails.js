@@ -313,7 +313,7 @@ const PostDetails = () => {
               <div className="whitespace-pre-wrap px-1 break-all mt-4">{post}</div>
               <div className="mt-5 flex gap-2 justify-center border-b -mx-2  flex-wrap">
                 {
-                  image ? <> <img src={image} className=' max-h-96 object-cover w-full ' alt="img" /></> : ''
+                  image ? <> <img src={image} className='  border-t  w-full ' alt="img" /></> : ''
                 }
               </div>
               <div className=" h-16 border-b -mx-2  flex items-center gap-1 md:gap-2 px-3 justify-between">

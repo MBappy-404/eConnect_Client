@@ -7,13 +7,6 @@
   font-family: 'Open Sans', sans-serif;
  }
 
- .social-media-image {
-  max-width: 100%; /* Image won't exceed its original width */
-  max-height: 100%; /* Image won't exceed its original height */
-  width: auto; /* Reset any previous width setting */
-  height: auto; /* Reset any previous height setting */
-}
-
 
 @media (max-width: 1200px) and (min-width: 1024px) {
 

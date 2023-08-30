@@ -102,9 +102,9 @@ const Profile = () => {
 
                           {eUser.phone && <p> <FaPhone className='w-5 text-gray-400 h-5 inline mr-2 mb-1' />Phone: <span className='font-semibold'>{eUser.phone ? eUser.phone : ""}</span> </p>}
 
-                          {eUser.work && <p> <FaBriefcase className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Work/Company: <span className='font-semibold'> {eUser.work}</span></p>}
+                          {eUser.work && <p> <FaBriefcase className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Work: <span className='font-semibold'> {eUser.work}</span></p>}
 
-                          {eUser.college && <p> <FaUserGraduate className='w-5 text-gray-400 h-5  inline mr-1 mb-1' /> College/University: <span className='font-semibold'>{eUser.college}</span></p>}
+                          {eUser.college && <p> <FaUserGraduate className='w-5 text-gray-400 h-5  inline mr-1 mb-1' /> Studies: <span className='font-semibold'>{eUser.college}</span></p>}
 
                           {eUser.address && <p> <FaHouseUser className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Address: <span className='font-semibold'>{eUser.address}</span></p>}
                           {

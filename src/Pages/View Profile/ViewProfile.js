@@ -12,7 +12,7 @@ const ViewProfile = () => {
 
      const { loading, setLoading } = useState();
      const { updatedEmail, email, phone, work, _id, address, college, bio, like, twitter, updatedName, name, updatedPhoto, photo, instagram, facebook, } = useLoaderData();
-     const [follow, setFollow] = useState(like)
+     const [follow, setFollow] = useState(like ? like : 0)
 
 
 
@@ -189,9 +189,9 @@ const ViewProfile = () => {
 
                                                        {phone && <p> <FaPhone className='w-5 text-gray-400 h-5 inline mr-2 mb-1' />Phone: <span className='font-semibold'>{phone ? phone : ""}</span> </p>}
 
-                                                       {work && <p> <FaBriefcase className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Work/Company: <span className='font-semibold'> {work}</span></p>}
+                                                       {work && <p> <FaBriefcase className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Work: <span className='font-semibold'> {work}</span></p>}
 
-                                                       {college && <p> <FaUserGraduate className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> College/University: <span className='font-semibold'>{college}</span></p>}
+                                                       {college && <p> <FaUserGraduate className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Studies: <span className='font-semibold'>{college}</span></p>}
 
                                                        {address && <p> <FaHouseUser className='w-5 text-gray-400 h-5 inline mr-1 mb-1' /> Address: <span className='font-semibold'>{address}</span></p>}
                                                        {
