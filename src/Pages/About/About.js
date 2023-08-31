@@ -16,7 +16,7 @@ const About = () => {
 	const [loading2, setLoading2] = useState()
 
 	// load users data 
-	const { data: users = [], refetch } = useQuery({
+	const { data: users = [], refetch } = useQuery({ 
 		queryKey: ['users'],
 		queryFn: async () => {
 			setLoading(true)
@@ -79,7 +79,7 @@ const About = () => {
 		// update with image 
 		const formData = new FormData();
 		formData.append('image', image);
-		console.log(formData);
+		// console.log(formData);
 		//    upload image bb 
 		fetch("https://api.imgbb.com/1/upload?key=f2c11278b0c7405521c7d060f7caf053", {
 			method: 'POST',
@@ -113,7 +113,7 @@ const About = () => {
 					})
 						.then(res => res.json())
 						.then(data => {
-							console.log(data);
+							// console.log(data);
 							if (data.acknowledged || data.matchedCount) {
 								toast.success("Your info update successfully")
 								setLoading2(false)

@@ -18,7 +18,7 @@ const ViewProfile = () => {
 
      const handleMessageSend = () => {
           document.getElementById('message').value = ''
-          toast.success('Request Send')
+          toast.warning('Available soon')
      }
 
      const { data: users = [] } = useQuery({

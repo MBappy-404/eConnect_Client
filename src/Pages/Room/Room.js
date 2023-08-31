@@ -43,7 +43,11 @@ const Room = () => {
       };
    }, []);
 
+
+
+
    const handleMessageSend = (event) => {
+
 
       // get user name and photo 
       let name = users?.filter(users => { return users?.email === user?.email }).map(eUser => eUser?.name)
@@ -68,6 +72,13 @@ const Room = () => {
       else { toast.warning("Please write some word") }
    };
 
+   const handleKeyDown = (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        handleMessageSend(event);
+      }
+    };
+
    // auto scrolling messages 
    useEffect(() => {
       endMessageFocus.current?.scrollIntoView({ behavior: 'smooth' });
@@ -90,7 +101,7 @@ const Room = () => {
                   <FaArrowRight className='w-4 h-4 mr-1 inline' /> যদি মেসেজ সেন্ড না হয় কিংবা রিসিভ না হয় তাহলে অনুগ্রহপূর্বক কিছুক্ষণ অপেক্ষা করুন। মূলত আপনার নেটওয়ার্কের দুর্বল কানেকশনের জন্য কিংবা সার্ভারের কানেকশনের জন্য এরকম হতে পারে। ধন্যবাদ আমাদের সাথেই থাকুন।
                </p>
                <div className="modal-action">
-                  <label htmlFor="my-modal" className="btn">Ok</label>
+                  <label htmlFor="my-modal" className="btn btn-primary">Ok</label>
                </div>
             </div>
          </div>
@@ -105,7 +116,7 @@ const Room = () => {
                      <div class="text-sm md:text-xl  mt-1 flex items-center">
                         <span class="text-gray-500 font-extrabold mr-3">eConnect Room</span>
                      </div>
-                     <span class="text-sm md:text-md font-normal text-gray-600">{users?.length} users in eConnect </span>
+                     <span class="text-sm md:text-md font-normal text-gray-600">{users?.length} Members In This Room </span>
                   </div>
                </div>
                {/* icons */}
@@ -187,6 +198,7 @@ const Room = () => {
 
                   <div class="flex items-center bg-gray-200  rounded-lg py-1">
                      <textarea
+                        onKeyDown={handleKeyDown}
                         spellCheck={false}
                         value={inputValue}
                         name="message"

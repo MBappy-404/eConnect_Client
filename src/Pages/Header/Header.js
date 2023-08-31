@@ -132,11 +132,11 @@ const Header = () => {
                               </label></> : ''}
                               
                               {user ? <> <ul tabIndex={0} className="menu text-base   bg-gray-200 dropdown-content mt-1 text-center p-6 shadow-xl  font-semibold  rounded-box w-52 mr-2">
-                                   <li><Link to='/profile'> <FaUserCircle className='block w-4 h-4 mr-2 text-gray-600' />Profile</Link></li>
-                                   <li><Link to='/saved'> <FaFolderOpen className='block w-4 h-4 mr-2 text-gray-600' />Saved</Link></li>
-                                   <li><Link to='/report'> <FaSave className='block w-4 h-4 mr-2 text-gray-600' />Reports</Link></li>
-                                   <li><Link to='/others'> <FaLayerGroup className='block w-4 h-4 mr-2 text-gray-600' />Others</Link></li>
-                                   <li><span onClick={handleLogOut}> <FaSignOutAlt className='block w-4 h-4 mr-2 text-gray-600' /> Log Out</span></li>
+                                   <li><Link to='/profile'> <FaUserCircle className='block w-4 h-4 mr-1 text-gray-600' />Profile</Link></li>
+                                   <li><Link to='/saved'> <FaFolderOpen className='block w-4 h-4 mr-1 text-gray-600' />Saved</Link></li>
+                                   <li><Link to='/report'> <FaSave className='block w-4 h-4 mr-1 text-gray-600' />Reports</Link></li>
+                                   <li><Link to='/others'> <FaLayerGroup className='block w-4 h-4 mr-1 text-gray-600' />Others</Link></li>
+                                   <li><span onClick={handleLogOut}> <FaSignOutAlt className='block w-4 h-4 mr-1 text-gray-600' /> Log Out</span></li>
                               </ul></> : <><span className='btn btn-sm btn-primary'><Link to='/signIn'>Log In</Link></span></>}
                          </div>
                     </div>

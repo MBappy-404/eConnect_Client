@@ -165,9 +165,9 @@ const ShowPost = ({publicPost,refetch,setLoading2}) => {
           .then(data => {
                // console.log(data);
                if(data.acknowledged){
-                    toast.success( "Reported successfully");
+                    toast.success( "Reported successfully. We reviewed your report");
                     setLoading4(false)
-                    navigate('/home')
+                    navigate('/media')
                     form.reset()
                }
           })
@@ -261,7 +261,7 @@ const ShowPost = ({publicPost,refetch,setLoading2}) => {
                                         d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                               </svg></label>
 
-                                 <ul tabIndex={0} className="dropdown-content menu p-2  font-semibold shadow-2xl shadow-gray-500 border bg-gray-100 -mt-3  rounded-box w-52 ">
+                                 <ul tabIndex={0} className="dropdown-content menu p-2  font-semibold shadow-2xl shadow-gray-500 border bg-gray-200 -mt-3  rounded-box w-52 ">
                                    {/* post action  */}
                                   {
                                    user?.email === userEmail || user?.email === "sadikulsad0810@gmail.com" ?  <li><label htmlFor={`post-update-modal-${_id}`}><span>Edit Post</span></label></li> : ' '

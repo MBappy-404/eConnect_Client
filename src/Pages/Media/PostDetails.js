@@ -182,22 +182,22 @@ const PostDetails = () => {
 
   }
 
-      // delete post 
-      const handleDelete = () =>{
-        fetch(`https://e-somaz-server.vercel.app/post/delete/${_id}`, {
-             method: 'DELETE'
-        })
-             .then(res => res.json())
-             .then(data => {
-                  // console.log(data);
-                  if (data.acknowledged) {
-                       toast.success('Delete Successfully')
-                  }
-                 navigate('/media')
-                  
-             })
-   
-   }
+  // delete post 
+  const handleDelete = () => {
+    fetch(`https://e-somaz-server.vercel.app/post/delete/${_id}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(data => {
+        // console.log(data);
+        if (data.acknowledged) {
+          toast.success('Delete Successfully')
+        }
+        navigate('/media')
+
+      })
+
+  }
 
 
 
@@ -212,7 +212,7 @@ const PostDetails = () => {
         {
           loading ?
 
-            <div className="py-10 rounded-2xl mt-4 shadow-md mx-auto w-full bg-white  md:w-[750px] lg:w-[500px]  animate-pulse ">
+            <div className=" 2xl:mb-72 lg:mb-20 rounded-2xl mt-4 shadow-md mx-auto w-full bg-white  md:w-[750px] lg:w-[500px]  2xl:w-[600px] animate-pulse ">
               <div className="flex p-1 space-x-4 sm:px-2">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700"></div>
                 <div className="flex-1 py-2 space-y-4">
@@ -229,7 +229,7 @@ const PostDetails = () => {
 
             :
 
-            <div className="border w-full  md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto  rounded-2xl p-2">
+            <div className="border w-full  mb-20 2xl:mb-72  2xl:w-[600px]  md:w-[750px] lg:w-[500px] bg-white mt-4 m-auto  rounded-2xl p-2">
               <div className="flex items-center	justify-between">
                 <div className="gap-1.5	flex items-center ">
 
@@ -263,12 +263,14 @@ const PostDetails = () => {
                       <path
                         d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                     </svg></label>
-                    <ul tabIndex={0} className="dropdown-content menu p-2  font-semibold shadow-2xl shadow-gray-500 border bg-gray-100  rounded-box w-52 ">
+                    <ul tabIndex={0} className="dropdown-content menu p-2 -mt-3 font-semibold shadow-2xl shadow-gray-500 border bg-gray-200  rounded-box w-52 ">
                       {/* post action  */}
 
                       <li onClick={handleSaved}><a>Save Post</a></li>
-                      <label htmlFor={`report-modal-${_id}`} ><li><a>Report Post</a></li></label>
-                      {user?.email === userEmail  || user?.email === "sadikulsad0810@gmail.com" ? <li onClick={handleDelete}><span>Delete Post</span></li> : " "}
+                      {
+                        userEmail === user?.email ? ' ' : <label htmlFor={`report-modal-${_id}`} ><li><span>Report Post</span></li></label>
+                      }
+                      {user?.email === userEmail || user?.email === "sadikulsad0810@gmail.com" ? <li onClick={handleDelete}><span>Delete Post</span></li> : " "}
                     </ul>
                   </div>
                 </div>
@@ -370,72 +372,72 @@ const PostDetails = () => {
                           color="white"
                           backgroundColor="#6A64F1"
                         /> <span className='text-gray-500 ml-2 text-xs'>Submitting your comment</span>
-                        
-                        {comment.slice(0).reverse().map(comments =>
-                          // comments body spinner 
-                          <div key={comments._id} className=" w-full mt-2 flex gap-1 p-1 rounded-lg">
-                            <div className="flex">
-                              {comments.userPhoto ? <> <img src={comments.userPhoto} alt="img" className="w-8 h-8 ring-1 rounded-full object-cover" /></> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt="img" className="w-8 h-8 ring-1 object-cover rounded-full" />}
-                            </div>
-                            <div className="block max-w-[270px] md:max-w-[350px]">
-                              <div className="flex justify-center items-center space-x-2">
-                                <div className="bg-gray-100 w-auto rounded-xl px-3 pb-2">
-                                  <div className="font-medium">
-                                    <span className="hover:underline cursor-pointer text-sm text-gray-700 font-semibold">
-                                      <span>{comments.userEmail === "sadikulsad0810@gmail.com" ? <> {comments.userName} <FaCheckCircle className='inline w-3 h-3 text-blue-700' /> </> : <> {comments.userName}</>} </span>
-                                    </span>
-                                  </div>
-                                  <div className="text-[14px] break-all  min-w-[100px]  md:text-[15px] px-1 font-medium text-gray-500">
-                                    {comments.comment}
-                                  </div>
-                                </div>
 
-                              </div>
-                              <div className="flex justify-start items-center text-sm w-full">
-                                <div className="text-gray-500 cursor-default px-2 flex items-center justify-center space-x-1">
-                                  <span className="hover:underline ml-2">
-                                    <small data-tip={`${comments.time.slice(0, 10)}`} className='tooltip'>{moment(`${comments.time}`).fromNow()}</small>
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                        )} </> : comment && comment.slice(0).reverse().map(comments =>
-                          //  comments
-                          <div key={comments._id} className=" w-full mt-2 flex gap-1 p-1 rounded-lg">
-                            <Link to={`/user/${comments.commentUserId}`} >
-                              <div className="flex ">
+                          {comment.slice(0).reverse().map(comments =>
+                            // comments body spinner 
+                            <div key={comments._id} className=" w-full mt-2 flex gap-1 p-1 rounded-lg">
+                              <div className="flex">
                                 {comments.userPhoto ? <> <img src={comments.userPhoto} alt="img" className="w-8 h-8 ring-1 rounded-full object-cover" /></> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt="img" className="w-8 h-8 ring-1 object-cover rounded-full" />}
                               </div>
-                            </Link>
-                            <div className="block max-w-[270px] md:max-w-[350px]">
-                              <div className="flex justify-center items-center space-x-2">
-                                <div className="bg-gray-100 w-auto rounded-xl px-3 pb-2">
-                                  <div className="font-medium">
-                                    <Link to={`/user/${comments.commentUserId}`} >
+                              <div className="block max-w-[270px] md:max-w-[350px]">
+                                <div className="flex justify-center items-center space-x-2">
+                                  <div className="bg-gray-100 w-auto rounded-xl px-3 pb-2">
+                                    <div className="font-medium">
                                       <span className="hover:underline cursor-pointer text-sm text-gray-700 font-semibold">
                                         <span>{comments.userEmail === "sadikulsad0810@gmail.com" ? <> {comments.userName} <FaCheckCircle className='inline w-3 h-3 text-blue-700' /> </> : <> {comments.userName}</>} </span>
                                       </span>
-                                    </Link>
+                                    </div>
+                                    <div className="text-[14px] break-all  min-w-[100px]  md:text-[15px] px-1 font-medium text-gray-500">
+                                      {comments.comment}
+                                    </div>
                                   </div>
-                                  <div className="text-[14px] break-all min-w-[100px]  md:text-[15px] px-1 font-medium text-gray-500">
-                                    {comments.comment}
-                                  </div>
-                                </div>
 
-                              </div>
-                              <div className="flex justify-start items-center text-sm w-full">
-                                <div className="text-gray-500 cursor-default px-2 flex items-center justify-center space-x-1">
-                                  <span className="hover:underline ml-2">
-                                    <small data-tip={`${comments.time.slice(0, 10)}`} className='tooltip'>{moment(`${comments.time}`).fromNow()}</small>
-                                  </span>
+                                </div>
+                                <div className="flex justify-start items-center text-sm w-full">
+                                  <div className="text-gray-500 cursor-default px-2 flex items-center justify-center space-x-1">
+                                    <span className="hover:underline ml-2">
+                                      <small data-tip={`${comments.time.slice(0, 10)}`} className='tooltip'>{moment(`${comments.time}`).fromNow()}</small>
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                        )
+                          )} </> : comment && comment.slice(0).reverse().map(comments =>
+                            //  comments
+                            <div key={comments._id} className=" w-full mt-2 flex gap-1 p-1 rounded-lg">
+                              <Link to={`/user/${comments.commentUserId}`} >
+                                <div className="flex ">
+                                  {comments.userPhoto ? <> <img src={comments.userPhoto} alt="img" className="w-8 h-8 ring-1 rounded-full object-cover" /></> : <img src='https://i.pinimg.com/736x/c9/e3/e8/c9e3e810a8066b885ca4e882460785fa.jpg' alt="img" className="w-8 h-8 ring-1 object-cover rounded-full" />}
+                                </div>
+                              </Link>
+                              <div className="block max-w-[270px] md:max-w-[350px]">
+                                <div className="flex justify-center items-center space-x-2">
+                                  <div className="bg-gray-100 w-auto rounded-xl px-3 pb-2">
+                                    <div className="font-medium">
+                                      <Link to={`/user/${comments.commentUserId}`} >
+                                        <span className="hover:underline cursor-pointer text-sm text-gray-700 font-semibold">
+                                          <span>{comments.userEmail === "sadikulsad0810@gmail.com" ? <> {comments.userName} <FaCheckCircle className='inline w-3 h-3 text-blue-700' /> </> : <> {comments.userName}</>} </span>
+                                        </span>
+                                      </Link>
+                                    </div>
+                                    <div className="text-[14px] break-all min-w-[100px]  md:text-[15px] px-1 font-medium text-gray-500">
+                                      {comments.comment}
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <div className="flex justify-start items-center text-sm w-full">
+                                  <div className="text-gray-500 cursor-default px-2 flex items-center justify-center space-x-1">
+                                    <span className="hover:underline ml-2">
+                                      <small data-tip={`${comments.time.slice(0, 10)}`} className='tooltip'>{moment(`${comments.time}`).fromNow()}</small>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          )
                       }
 
                     </>

@@ -1,5 +1,5 @@
 
-import {  FaGlobe } from 'react-icons/fa';
+import {  FaGlobe, FaQuoteLeft, FaQuoteRight, FaRegTimesCircle } from 'react-icons/fa';
 import moment from 'moment';
 
 const ShowReport = ({ report }) => {
@@ -42,18 +42,16 @@ const ShowReport = ({ report }) => {
                       <div className="text-center">
                         <h1 className="text-2xl font-bold mb-3">Reports</h1>
                       </div>
-                      {Reports.map((report, i) => (
+                      {Reports?.map((report, i) => (
                         // report data
-                        <div key={i + 1} className='bg-gray-100 p-3 mt-1 rounded-lg'>
+                        <div key={i + 1} className='bg-gray-200 p-3 mt-1 rounded-lg'>
                           <div className="flex items-center mb-2">
-                            <div>
-                              <h2 className="text-lg  ">Posted by: {postUser}</h2>
-                              <p className="text-gray-600">Reported by: {report.reporterName}</p>
-                            </div>
+                             
                           </div>
                           <div className="mb-2">
-                            <h3 className="text-lg font-semibold">Reason for Report:</h3>
-                            <p className="text-gray-700">{report.selectReport}</p>
+                            <h3 className="text-lg font-semibold">{i+1}.Reason for Report:</h3>
+                            <p className="text-gray-700"> <FaRegTimesCircle className='w-4 h-4 inline mr-1 text-red-600'/> {report.selectReport}</p>
+                            <p className="text-gray-700"><span className='italic mt-1'> <FaQuoteLeft className='text-gray-500 w-3 h-3 inline mr-1'/>  {report.messageReport}  <FaQuoteRight className='text-gray-500 w-3 h-3 inline ml-1'/></span></p>
                           </div>
                         </div>
                       ))}
